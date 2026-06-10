@@ -5,12 +5,13 @@ client modelling a PPA for a hybrid solar asset re-enters the same asset across 
 products (Solaris → Chronos → Lumus), with lossy or manual hand-offs between them. The prototype is a
 throwaway mock of the coherent journey it could be, built to start a team conversation.
 
-This example was produced by walking the kit's arc with Donna, not fabricated, and it grounds each
-stage in the current-state captures in `current-state/` (which are gitignored, so the real product
-screenshots stay local and unpublished).
+This example was produced by walking the kit's arc with Donna, not fabricated. The product screenshots
+it was grounded in are kept local (gitignored); `00-current-state.md` describes them in words so this
+stands on its own.
 
 ## Read in order
 
+0. `00-current-state.md` — what today's three-product journey looks like
 1. `01-team-context.md` — context the team authored (stage 2)
 2. `02-frame.md` — the framed problem, including the three real breaks (stage 3)
 3. `03-slice.md` — the one slice chosen (stage 4)
