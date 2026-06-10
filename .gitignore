@@ -1,2 +1,5 @@
 .DS_Store
 Thumbs.db
+
+# Current-state product screenshots — kept local, not published by default
+worked-example/current-state/

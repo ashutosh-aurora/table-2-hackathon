@@ -1,32 +1,46 @@
-# Frame — Internal request triage (worked example)
+# Frame — Seamless PPA journey for a hybrid solar asset (worked example)
 
 ## Problem
 
-Internal requests arrive underspecified and misrouted. Requesters do not know who owns what or what
-detail to include, so receiving teams spend time chasing basics or forwarding requests that were
-never theirs. The cost is spread thinly across many people, so no one owns fixing it.
+Modelling a PPA for a hybrid solar asset is split across three Aurora EOS products, and the client
+re-enters the same asset in each while the connections between them are weak or broken:
+
+- **Solaris → Chronos:** the client clicks to send the generation profile, then re-selects it by name
+  in Chronos. Only the name survives; the profile's metadata and context are lost.
+- **→ Lumus:** clients cannot bring their own solar profile into Lumus at all. CS does it manually
+  behind the scenes, or the client prices a **generic** profile rather than their real asset.
+- **Dates:** Chronos uses the project CoD; Lumus uses the contract's own dates, which may legitimately
+  differ. But the two use different entry conventions and nothing cross-validates them (e.g. a contract
+  starting before the CoD is not caught).
 
 ## Intended outcome
 
-A request lands at the right team, first time, complete enough to act on, without the requester
-having to know the org chart.
+One coherent journey: the solar asset, its profile and context, the market scenario, and consistent
+date conventions flow across the three steps, so the client experiences a single product and their real
+asset reaches the contract valuation without CS intervention or a generic fallback.
+
+## User
+
+An external client modelling a PPA for a hybrid solar-plus-storage asset. Also affected: CS, who fill
+the gap today.
 
 ## Boundaries
 
-- **In scope:** understanding a request in plain language, checking completeness, asking follow-ups,
-  suggesting the owning team.
-- **Out of scope:** actually fulfilling the request, integrating with ticketing systems, handling
-  every request type. We are not building a help desk; we are triaging the front door.
+- **In scope:** the front-stage user journey and its coherence.
+- **Out of scope (explicit):** backend data integration, and the correctness of the underlying models.
 
 ## Success criteria
 
-For a chosen request type: the agent spots a missing essential, asks for it, and names the right
-owning team, on realistic examples, more reliably than an unaided requester would.
+The mock makes the coherent journey legible enough that teams agree the breaks (especially the Lumus/CS
+gap) are worth closing, and a real conversation starts.
 
 ## Scariest risks
 
-- **Value** (will anyone want it): real but secondary; the pain is widely felt.
-- **Usability** (can people use it): **scariest.** Will a requester actually answer follow-up
-  questions rather than abandon the agent? If not, nothing else matters.
-- **Feasibility** (can we build it): moderate; an assistant can plausibly do this from plain language.
-- **Business viability** (does it work for the business): out of scope for a one-day prototype.
+- **Usability** — is the unified journey actually coherent and clear? **Primary.**
+- **Value** — is closing the breaks worth investing in? The mock exists to test this with the teams.
+- Feasibility and business viability: out of scope for this mock.
+
+## Context gaps
+
+- The exact metadata lost in the Solaris→Chronos hand-off — confirmed lossy by Donna; precise fields
+  not enumerated. Ask: Chronos / Solaris product owners if needed for a fuller version.
