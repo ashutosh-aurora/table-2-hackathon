@@ -16,5 +16,7 @@ and themes are added.
 | **Product risks (Cagan's four)** | Value (will anyone want it), usability (can people use it), feasibility (can we build it), business viability (does it work for the business). |
 | **Team context** | Context a table authors for its problem: users, success criteria, ways of working. |
 | **Skill** | A reusable, invokable way to do a task well (a `SKILL.md`). |
+| **Team topology** | The map of what teams and functions exist and how they interact. |
+| **Team API** | One team's progressively-disclosed entry: what it owns and how to engage it, internals hidden. |
 
 <!-- Add Aurora business / product / regional terms here as they are confirmed. -->

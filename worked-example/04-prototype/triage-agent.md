@@ -25,6 +25,10 @@ requests. No code, no integrations.
 > Be brief and friendly. Never ask for something already provided. If the request is not a data-extract
 > request, say so and stop.
 
+The "suggest the owning team" step consults the team topology in
+`context/team-topology/team-topology.md`, the map of who owns what. This is the team-topology context
+layer in use: the agent consumes it to route, rather than the table inventing teams.
+
 ## Test requests the team ran it against
 
 1. *"Can someone pull the German wind numbers for me?"* — missing date range, format, purpose.

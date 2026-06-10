@@ -27,7 +27,8 @@ The table **consumes** some context and **authors** the rest. Knowing which is w
 | Context | Consume or author | Where |
 |---|---|---|
 | Business context — what Aurora wants to realise (vision, mission) | Consume | `context/business/` |
-| Product-area context — the theme and objectives for this area | Consume | `context/product-area/` |
+| Product-area context — the objectives for this area | Consume | `context/product-area/` |
+| Team topology — what teams exist, what they own, how to reach them (each team's "team API") | Consume | `context/team-topology/` |
 | Ubiquitous language — the agreed names for things | Reference | `definitions/glossary.md` |
 | Skills and templates — reusable ways to build well | Use | `skills/`, `templates/` |
 | Team-level context — this table's success criteria, users, ways of working | **Author** | `context/team/` |
