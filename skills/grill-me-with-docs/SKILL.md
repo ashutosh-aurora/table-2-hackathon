@@ -25,4 +25,5 @@ workspace and can inform it.
 
 If the real skill is not yet available, ask the team questions one at a time about their problem and
 context, push back where an answer is vague or unsupported by the docs, and keep a running list of
-open assumptions.
+open assumptions. Where the docs do not support an answer, say so and name who the team should ask,
+rather than letting the gap pass as if filled.

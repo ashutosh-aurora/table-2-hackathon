@@ -26,4 +26,6 @@ so his version can drop straight in.
 ## Stand-in behaviour until replaced
 
 If the real skill is not yet available, walk the team through `templates/frame.md` field by field,
-asking a clarifying question for each, and grounding answers in the context already in the folder.
+asking a clarifying question for each, and grounding answers in the context already in the folder. If
+the context needed for an answer is absent or unclear, name the specific gap and who the team should
+ask, and record it; do not assume an answer to keep moving.

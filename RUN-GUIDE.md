@@ -15,6 +15,13 @@ and the table still gets the full experience.
 3. Read the worked example in `worked-example/` once. It is the same arc the table will walk, on a
    different problem, so you know what each stage produces.
 
+## Insufficient context is a signal
+
+If a team cannot answer something because the context is not there, that is a finding, not a blocker to
+push past. Help them name the gap and decide who owns the answer, rather than letting them assume. The
+skills surface these gaps for you. A team that leaves knowing exactly which context it was missing, and
+who to ask, has done real work.
+
 ## The arc, stage by stage
 
 For each stage: what the table is doing, what you do, and what they produce.

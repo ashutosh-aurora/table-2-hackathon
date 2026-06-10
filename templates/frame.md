@@ -29,3 +29,10 @@ prototype.
 - **Usability** (can people use it): [note]
 - **Feasibility** (can we build it): [note]
 - **Business viability** (does it work for the business): [note]
+
+## Context gaps
+
+Context you needed but did not have, and who owns the answer. A gap recorded here is a real output, not
+a failure. Do not assume past it.
+
+- [missing or unclear context] — ask: [person / team]

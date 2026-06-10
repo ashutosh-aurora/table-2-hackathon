@@ -34,6 +34,25 @@ The table **consumes** some context and **authors** the rest. Knowing which is w
 | Team-level context — this table's success criteria, users, ways of working | **Author** | `context/team/` |
 | Team-level deliverables — the frame, the slice, the prototype | **Produce** | `worked-example/` shows the shape |
 
+## What this repo asks of you
+
+It should be self-evident what the team is expected to do here. At each point, the ask is one of:
+
+- **Complete the context** you need but do not yet have.
+- **Generate the idea** — agree the ambition.
+- **Shape the slice** — narrow to one prototypable piece.
+- **Prototype** — make it tangible.
+
+## When context is missing or unclear
+
+Treat thin or ambiguous context as a warning sign, not something to build through. Each skill checks
+whether the context it needs is present and clear. If it is not, the skill names the specific gap and
+who the team should ask, and stops short of assuming. Going to ask the right person is an expected,
+valid move, not a failure. Do not fabricate context to keep going.
+
+Before the day, some context here is deliberately still a placeholder, because it depends on other
+people. The loop still runs end to end, and the gaps it surfaces are part of what it produces.
+
 ## Where to start
 
 - **Facilitators:** read `RUN-GUIDE.md`.

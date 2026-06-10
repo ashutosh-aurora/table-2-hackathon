@@ -20,6 +20,11 @@ is one good slice, not a delivery plan.
 
 ## Process
 
+**Before you start, check the context is sufficient.** Confirm the framed problem and the context it
+relies on are present and clear. If a needed piece is missing or ambiguous, name the specific gap and
+who the team should ask, and pause there rather than assuming. Thin context is a signal, not a thing
+to build through.
+
 1. **Restate the ambition in one sentence.** Confirm it with the team before slicing.
 2. **List candidate slices.** Offer three to five distinct, small pieces of the ambition. Each should
    be understandable on its own.

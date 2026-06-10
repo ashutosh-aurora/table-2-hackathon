@@ -15,6 +15,10 @@ to build the cheapest thing that would move that risk. This skill does not force
 
 ## Process
 
+**Before building, check you have the context the prototype needs** (for example, the team topology to
+route to). If a needed piece is missing or unclear, name the gap and who to ask rather than inventing
+it. Thin context is a signal.
+
 1. **Name the risk and the question.** State the one product risk this prototype attacks and the
    single question it should answer (for example: "would a requester actually answer the follow-up
    questions?" for usability).
