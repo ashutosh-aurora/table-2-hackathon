@@ -3,3 +3,7 @@ Thumbs.db
 
 # Current-state product screenshots — kept local, not published by default
 worked-example/current-state/
+
+# In-flight product/naming strategy — internal, kept local
+context/product-area/*.pdf
+context/product-area/asset-domain-use-cases.md
