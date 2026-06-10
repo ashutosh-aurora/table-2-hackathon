@@ -7,8 +7,9 @@ five stages in a day, ending in a throwaway prototype.
 ## The five stages
 
 1. **Align on the ambition** — the table agrees a deliberately large problem within their theme.
-2. **Build the team context** — the table writes down, for their problem, who the users are, what
-   success looks like, and how they want to work. They author this; it does not exist yet.
+2. **Build the context the problem needs** — start with the team's own context (who the users are,
+   what success looks like, how they want to work), which they author. Pull in wider context only as
+   the framing reveals you need it (see "Let the problem drive the context").
 3. **Frame** — turn the ambition into a clear problem statement: outcome, boundaries, success criteria.
 4. **Shape to one slice** — carve a single, prototypable slice off the ambition.
 5. **Prototype** — make that slice tangible, in whatever medium fits.
@@ -52,6 +53,13 @@ valid move, not a failure. Do not fabricate context to keep going.
 
 Before the day, some context here is deliberately still a placeholder, because it depends on other
 people. The loop still runs end to end, and the gaps it surfaces are part of what it produces.
+
+## Let the problem drive the context
+
+Shape the problem before gathering context, not the other way round. The context you need is whatever
+*this* problem and *this* slice require, which is usually very little, and a smaller slice needs less.
+Don't gather context speculatively or try to fill every folder. Pull in only what the framing demands,
+and keep what you write lean: the concepts and the open questions, not an audit trail.
 
 ## Where to start
 
