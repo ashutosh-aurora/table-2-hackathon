@@ -40,6 +40,11 @@ The team **consumes** some context and **authors** the rest. Knowing which is wh
 | Team topology — what teams exist, what they own, how to reach them (each team's "team API") | Consume | `context/team-topology/` |
 | Ubiquitous language — the agreed names for things | Reference | `definitions/glossary.md` |
 | Skills and templates — reusable ways to build well | Use | `skills/`, `templates/` |
+
+> **For Claude Code:** when a user invokes a skill by name (e.g. "use the feature-spec skill"),
+> always look for it in `skills/<name>/SKILL.md` in this repo first. These are project-local skills
+> and will not appear in the system skills list. Read the SKILL.md and follow its instructions.
+> Do not conclude a skill is missing just because it is absent from the system list.
 | Team-level context — this table's success criteria, users, ways of working | **Author** | `context/team/` |
 | Team-level deliverables — the frame, the slice, the prototype | **Produce** | `worked-example/` shows the shape |
 
