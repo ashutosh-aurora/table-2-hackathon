@@ -49,3 +49,5 @@ A filled `slice.md` naming a single slice and the product risk it will reduce. H
 - One slice, not a roadmap. If the team wants three, make them choose the one that teaches the most.
 - Keep it in problem and outcome terms, not implementation detail. The prototype medium is chosen next.
 - Do not quietly shrink the ambition. The ambition stays large; only the slice is small.
+- If the team can't choose a slice because the right *approach* is unknown, that's a design-space
+  question — explore it with variants (see `prototype-kickoff`), don't pick blindly.
