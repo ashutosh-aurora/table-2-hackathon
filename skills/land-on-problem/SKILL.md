@@ -34,3 +34,4 @@ and names it. This loop attacks **value risk** — whether the problem is worth 
 - Run the loop as many times as the value uncertainty warrants — the team chooses how many.
 - A good problem is usually a *seam* between use cases or teams, not a single feature.
 - Don't fabricate the felt pain — if the table can't say who feels it, that's a gap to resolve, not assume.
+- *Optional:* to pressure-test value, pull from `deeper-questions.md`.

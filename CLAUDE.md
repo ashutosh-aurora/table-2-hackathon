@@ -37,6 +37,18 @@ The two loops attack **different risks**, so run each as much as its uncertainty
 loop until you believe it's worth doing (value); the solution loop until you believe it can work
 (usability / feasibility / viability).
 
+## At each step, the agent offers a choice
+
+The journey is the team's to navigate. At each decision point the agent **proactively offers three
+moves**, rather than pushing ahead:
+
+- **Forward** — move to the next step.
+- **Deepen** — iterate here, or pull from `deeper-questions.md`, to surface more before moving on.
+- **Back** — return to an earlier step to revise an assumption that now looks wrong.
+
+This is how the two loops actually run — going back to revise the problem, or deepening a solution, is
+expected, not a detour.
+
 ## What a win is
 
 A win **reduces one of the four product risks** (after Marty Cagan): **value** (will anyone want it),

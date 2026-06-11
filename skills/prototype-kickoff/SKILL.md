@@ -59,7 +59,8 @@ day. A client is thrown off by a mismatched null as much as by a broken journey.
 The first rough artefact isn't the end; it's a prompt. Put it in front of the table and ask: **"what
 questions does this make you ask?"** It surfaces misalignment and uncertainty that weren't thinkable on
 paper — including the field-level convention clashes above. Feed those back, adjust, and go again, as
-many times as each pass keeps surfacing something new. The team decides how deep to go.
+many times as each pass keeps surfacing something new. The team decides how deep to go. For sharper
+prompts, pull from `deeper-questions.md`.
 
 ## Output
 

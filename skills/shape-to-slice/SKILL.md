@@ -52,3 +52,4 @@ folder. Hand this to the `prototype-kickoff` skill.
 - Do not quietly shrink the ambition. The ambition stays large; only the slice is small.
 - If the team can't choose a slice because the right *approach* is unknown, that's a design-space
   question — explore it with variants (see `prototype-kickoff`), don't pick blindly.
+- *Optional:* for more shaping rigour, see `deeper-questions.md`.
