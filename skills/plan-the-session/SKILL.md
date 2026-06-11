@@ -7,6 +7,8 @@ description: Start-of-day self-diagnosis that proposes a tailored plan and time 
 
 The entry point. The agent learns who the table is and what it needs, then proposes a plan and time
 allocation for the day. Meet the table where it is — don't march everyone through identical steps.
+(The pre-shared one-pager, `context/one-pager.md`, sets the same lens and criteria; this skill applies
+them live.)
 
 ## What to do
 

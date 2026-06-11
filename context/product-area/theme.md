@@ -1,20 +1,16 @@
-# Product-area context — [theme name] (PLACEHOLDER)
+# Your table's theme
 
-**Owner:** product-area / functional leadership. **Audience:** the table assigned this theme. This is
-context the table **consumes**.
+*Light theming only — a nudge, not a box. Filled per table before the day.*
 
-> One copy of this per table, naming that table's assigned theme. The 21 themes are set on a separate
-> track; fill this in once a table's theme is known.
+## Theme
 
-## The theme
+[The light theme assigned to this table.]
 
-[The area of interest assigned to this table.]
+## Why this theme, this table *(optional)*
 
-## Objectives for this area
+[One line, if helpful.]
 
-[What this area is trying to achieve: the objectives that frame which problems are worth caring about.
-Keep it to outcomes, not solutions.]
+---
 
-## Why this table, this theme
-
-[One line on why this theme suits this table, if relevant.]
+The one-pager (`context/one-pager.md`) points here, and `plan-the-session` reads it to orient the table.
+Tables are free to range beyond the theme.

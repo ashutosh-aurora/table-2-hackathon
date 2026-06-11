@@ -39,11 +39,13 @@ By the kind of context and who owns it — tables **consume** some kinds and **a
 - `skills/` — `plan-the-session`, `land-on-problem`, `feature-spec`, `shape-to-slice`, `prototype-kickoff`, `retro`.
 - `templates/` — `team-context`, `frame`, `slice`.
 - `context/` — business, product-area, team-topology (consumed), team (authored on the day).
+- `context/one-pager.md` — the problem-ideation primer (the lens and criteria for picking a problem).
 - `definitions/` — the glossary (the *ubiquitous language*) and `convention-gaps.md` (cross-product clashes to resolve post-offsite).
 - `feature/` — the table's working folder; everything produced goes here, renamed to the idea at the retro.
 - `worked-example/` — a complete pass through the core shape (a real cross-product PPA journey), to show tables what good looks like.
 
 ## Still to fill
 
-The strategy deck's vision/mission section; the 21 themes; the real team topology; the problem-ideation
-one-pager (Donna + Johannes); and the Claude Code access route in `SETUP.md`.
+The strategy deck's vision/mission section; the 21 themes (per-table light themes go in
+`context/product-area/theme.md`); the real team topology; the one-pager's final wording (drafted in
+`context/one-pager.md`, Johannes to co-review); and the Claude Code access route in `SETUP.md`.

@@ -10,7 +10,7 @@ and names it. This loop attacks **value risk** — whether the problem is worth 
 
 ## Inputs
 
-- The table's plan and position from `plan-the-session`.
+- The table's plan and position from `plan-the-session`, and the one-pager's lens (`context/one-pager.md`).
 - Business and product-area context, team topology, glossary — consume only what the problem needs.
 
 ## What to do
@@ -23,8 +23,13 @@ and names it. This loop attacks **value risk** — whether the problem is worth 
      adjacent end-user team.
 2. **Diverge first.** Generate several candidate problems before judging any. Don't let the table settle
    on its first idea.
-3. **Converge.** Judge candidates against: is it genuinely felt / worth doing (**value**)? does a
-   day-sized slice exist? will the artefacts enrich Aurora's context? Recommend one; the team decides.
+3. **Converge by excitement.** Among the candidates, the selector is **what the table is most excited
+   to work on** — the day's goal is to have fun. Excitement picks among problems that clear the floor:
+   - **genuinely felt** — someone real wants it (the value floor);
+   - worth caring about — often something **historically too daunting** to have attempted;
+   - it **leverages who's at the table** and lives the ethos of the day;
+   - a slice is doable today (even a slice that just **illustrates the principle** counts).
+   Help the table feel which one has energy; they decide.
 4. **Name the idea.** Once landed, the table names it — this is its identifier for the day, and becomes
    the folder name at the retro.
 5. Write the chosen problem (one short paragraph) to `feature/problem.md`. Hand to `feature-spec`.

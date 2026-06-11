@@ -99,7 +99,7 @@ you write lean: the concepts and the open questions, not an audit trail.
 
 ## Where to start
 
-- **Team:** start with `plan-the-session` — the agent will shape the day with you.
+- **Team:** start with `plan-the-session` — the agent will shape the day with you (skim `context/one-pager.md` first if you haven't).
 - **Facilitator:** also read `RUN-GUIDE.md` (your role: setup, the schedule, the floor, sharing output, troubleshooting).
 - **Agent:** begin at `plan-the-session` unless the team is already mid-journey.
 - **Setup:** `SETUP.md`. **A complete example of the shape:** `worked-example/`.
