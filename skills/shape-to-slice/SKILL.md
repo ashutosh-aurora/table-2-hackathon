@@ -41,8 +41,8 @@ to build through.
 
 ## Output
 
-A filled `slice.md` naming a single slice and the product risk it will reduce. Hand this to the
-`prototype-kickoff` skill.
+A filled `slice.md` naming a single slice and the product risk it will reduce. The file should be written to the `feature` folder. 
+Hand this to the`prototype-kickoff` skill.
 
 ## Guardrails
 

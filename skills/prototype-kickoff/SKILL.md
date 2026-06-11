@@ -39,6 +39,8 @@ it. Thin context is a signal.
 Any artefact that helped the team learn or explain, plus a short note of what it showed about the
 target risk.
 
+Put the artefacts in the 'feature/prototype' folder.
+
 ## Guardrails
 
 - The output is the learning, not a finished product.
