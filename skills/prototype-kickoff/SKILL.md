@@ -32,7 +32,8 @@ it. Thin context is a signal.
    - a clickable mock or wireframe,
    - a worked calculation or model sketch,
    - a vivid written walkthrough with realistic fake data to show another team.
-3. **Set a tight timebox** and start building immediately. Keep it throwaway; do not invest in polish.
+3. **Set a tight timebox** and start building immediately. Keep it rough and fast — but the artefact is
+   **kept**, not thrown away (it's collaged into Aurora's context later); skip the polish, not the learning.
 4. **Capture what it showed.** When the box is up, write two or three lines: what the prototype
    taught the team, or how it helps them explain the idea. That learning is the deliverable, not the
    artefact.
@@ -52,6 +53,13 @@ real vs nominal) that break the integrated feel. Where a convention is genuinely
 `definitions/glossary.md`; most are not yet, so when you surface a divergence, **log it in
 `definitions/convention-gaps.md`** to resolve post-offsite rather than inventing the right answer on the
 day. A client is thrown off by a mismatched null as much as by a broken journey.
+
+## Deepen — use the artefact as a prompt
+
+The first rough artefact isn't the end; it's a prompt. Put it in front of the table and ask: **"what
+questions does this make you ask?"** It surfaces misalignment and uncertainty that weren't thinkable on
+paper — including the field-level convention clashes above. Feed those back, adjust, and go again, as
+many times as each pass keeps surfacing something new. The team decides how deep to go.
 
 ## Output
 

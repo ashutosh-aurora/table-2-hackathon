@@ -10,3 +10,6 @@ context/product-area/asset-domain-use-cases.md
 context/team-topology/team-apis.md
 worked-example/integration-modes.prototype.html
 worked-example/integration-modes.NOTES.md
+
+# Staging — pre-kit thinking, local only
+_staging/

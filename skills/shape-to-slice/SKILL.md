@@ -10,8 +10,9 @@ success criteria). They leave with one slice small enough to prototype today, an
 product risk that prototype will attack.
 
 This is deliberately lighter than an engineering breakdown of an approved specification into
-implementation work. The team has a fresh problem and a throwaway goal, not a real codebase. The aim
-is one good slice, not a delivery plan.
+implementation work. The team has a fresh problem and a fast, rough goal, not a real codebase. The aim
+is one good slice, not a delivery plan. This is the **solution loop** — it attacks the non-value risks
+(usability, feasibility, viability) for the problem you've already landed on.
 
 ## Inputs
 
@@ -41,8 +42,8 @@ to build through.
 
 ## Output
 
-A filled `slice.md` naming a single slice and the product risk it will reduce. The file should be written to the `feature` folder. 
-Hand this to the`prototype-kickoff` skill.
+A filled `slice.md` naming a single slice and the product risk it will reduce, written to the `feature/`
+folder. Hand this to the `prototype-kickoff` skill.
 
 ## Guardrails
 
