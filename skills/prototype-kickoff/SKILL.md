@@ -48,9 +48,10 @@ altitudes** — low fidelity hides the lower one:
 
 Render each concept the way each app *actually does today*, **not** with clean uniform placeholders —
 uniform placeholders hide the exact inconsistencies (`0` here, `—` there; `01/2027` vs `2027-01`; €
-real vs nominal) that break the integrated feel. Hold the apps to the agreed conventions (see
-`definitions/glossary.md`) and surface every divergence as a gap to align. A client is thrown off by a
-mismatched null as much as by a broken journey.
+real vs nominal) that break the integrated feel. Where a convention is genuinely agreed it lives in
+`definitions/glossary.md`; most are not yet, so when you surface a divergence, **log it in
+`definitions/convention-gaps.md`** to resolve post-offsite rather than inventing the right answer on the
+day. A client is thrown off by a mismatched null as much as by a broken journey.
 
 ## Output
 

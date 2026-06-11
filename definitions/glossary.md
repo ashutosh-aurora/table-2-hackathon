@@ -7,6 +7,10 @@ entities and their relationships.
 Seeded with the terms this kit relies on. Extend it with Aurora-specific terms as the strategy deck
 and themes are added.
 
+> Representation conventions (units, formats, currency basis, null vs zero) across apps are **not yet
+> agreed**. Clashes are collected in `convention-gaps.md` to resolve post-offsite — don't assume a
+> convention that isn't written down.
+
 | Term | Means |
 |---|---|
 | **Ambition** | The large problem a table agrees in stage 1, before shaping down. |

@@ -23,6 +23,15 @@ The ambition carries a deliberate tension, and it matters when shaping work:
 
 Work that buys scale at the cost of regional rigour or advisory trust is off-strategy.
 
+## Integration is multi-scale
+
+Being "integrated" is required at every scale, not just the headline. The experience must be coherent at
+the **journey level** (one flow, carry-forward, no dead-ends) *and* consistent at the **field level** —
+dates, currency basis, units, and how null vs zero is shown. A small inconsistency throws a client off
+as much as a broken journey. So alignment is needed both here, at the vision, and at the lowest level of
+shared conventions — which are not yet agreed and are being collected in `definitions/convention-gaps.md`
+to resolve across product areas post-offsite.
+
 ## Context gap
 
 The authoritative business context is owned by senior leadership. Until Stuart and Mateusz's strategy
