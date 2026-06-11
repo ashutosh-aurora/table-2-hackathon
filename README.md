@@ -45,8 +45,9 @@ entry a **team API**.
 
 ## What's where
 
-- `CLAUDE.md` — entry context Claude reads: the arc, the context layers, where to start.
-- `RUN-GUIDE.md` — the facilitator playbook.
+- `CLAUDE.md` — the **shared journey** the team and the agent both follow (the five stages with each
+  party's role, the win criterion, the context model, the principles). One source of truth for the arc.
+- `RUN-GUIDE.md` — the facilitator's overlay on top of that journey (setup, being the floor, troubleshooting).
 - `SETUP.md` — getting Claude Code running and pointed here.
 - `skills/` — `feature-spec` and `grill-me-with-docs` (placeholders, yours); `shape-to-slice` and
   `prototype-kickoff` (new, authored here).

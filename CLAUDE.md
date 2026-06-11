@@ -1,29 +1,37 @@
-# Offsite prototyping kit
+# The journey — for the team and the agent
 
-This folder is the shared starting point for a table at the AI prototyping offsite. If you are
-Claude Code reading this, a table has pointed you here to help them move a large problem through
-five stages in a day, ending in a throwaway prototype.
+This is the shared starting point for a table at the offsite. **The team and the AI agent follow the
+same journey, set out below.** Together you move a large problem through five stages in a day, ending in
+a throwaway prototype. The journey is one and the same; what differs is the *role* each of you plays.
+
+**The two roles, across every stage:**
+- **The team** judges, decides, supplies the real context, and is accountable for the result.
+- **The agent** executes the skills, drafts, and surfaces gaps — and never fabricates.
 
 ## The five stages
 
-1. **Align on the ambition** — the table agrees a deliberately large problem within their theme.
-2. **Build the context the problem needs** — start with the team's own context (who the users are,
-   what success looks like, how they want to work), which they author. Pull in wider context only as
-   the framing reveals you need it (see "Let the problem drive the context").
-3. **Frame** — turn the ambition into a clear problem statement: outcome, boundaries, success criteria.
-4. **Shape to one slice** — carve a single, prototypable slice off the ambition.
-5. **Prototype** — make that slice tangible, in whatever medium fits.
+1. **Align on the ambition.** Agree a deliberately large problem within your theme; don't pre-shrink it.
+   - *Team:* decide the ambition. *Agent:* help sharpen the statement.
+2. **Build the context the problem needs.** Start with your own team context (users, success, ways of
+   working); pull in wider context only as framing reveals you need it.
+   - *Team:* supply real context; name gaps and who to ask. *Agent:* ask, check sufficiency, record gaps — don't invent.
+3. **Frame.** Turn the ambition into a clear problem: outcome, boundaries, success criteria.
+   - *Team:* the judgement calls. *Agent:* run feature-spec / grill-me-with-docs, draft the frame, surface gaps.
+4. **Shape to one slice.** Carve a single prototypable slice off the ambition.
+   - *Team:* choose the slice. *Agent:* propose candidates, score them, draft the slice.
+5. **Prototype.** Make that slice tangible, in whatever medium fits.
+   - *Team:* judge what it taught you; own the output. *Agent:* build the throwaway fast.
 
 ## What a win is
 
-A prototype succeeds if it reduces one of the four product risks (after Marty Cagan):
-**value** (will anyone want it), **usability** (can people use it), **feasibility** (can we build
-it), **business viability** (does it work for the business). Any artefact counts if it helped the
-table learn or explain something real.
+A prototype succeeds if it reduces one of the four product risks (after Marty Cagan): **value** (will
+anyone want it), **usability** (can people use it), **feasibility** (can we build it), **business
+viability** (does it work for the business). Any artefact counts if it helped the team learn or explain
+something real.
 
 ## The kinds of context here, and who owns them
 
-The table **consumes** some context and **authors** the rest. Knowing which is which is the point.
+The team **consumes** some context and **authors** the rest. Knowing which is which is the point.
 
 | Context | Consume or author | Where |
 |---|---|---|
@@ -34,15 +42,6 @@ The table **consumes** some context and **authors** the rest. Knowing which is w
 | Skills and templates — reusable ways to build well | Use | `skills/`, `templates/` |
 | Team-level context — this table's success criteria, users, ways of working | **Author** | `context/team/` |
 | Team-level deliverables — the frame, the slice, the prototype | **Produce** | `worked-example/` shows the shape |
-
-## What this repo asks of you
-
-It should be self-evident what the team is expected to do here. At each point, the ask is one of:
-
-- **Complete the context** you need but do not yet have.
-- **Generate the idea** — agree the ambition.
-- **Shape the slice** — narrow to one prototypable piece.
-- **Prototype** — make it tangible.
 
 ## When context is missing or unclear
 
@@ -63,7 +62,7 @@ and keep what you write lean: the concepts and the open questions, not an audit 
 
 ## Where to start
 
-- **Facilitators:** read `RUN-GUIDE.md`.
-- **Tables, on the day:** start at stage 2 by copying `templates/team-context.md` into `context/team/`.
-- **Setup help:** see `SETUP.md`.
-- **A complete example:** see `worked-example/`.
+- **Team:** read this journey, then begin stage 1.
+- **Facilitator:** also read `RUN-GUIDE.md` — your role (setup, being the floor, troubleshooting) on top of this journey.
+- **Agent:** you've read this; start where the team is in the arc.
+- **Setup:** `SETUP.md`. **A complete example:** `worked-example/`.

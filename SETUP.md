@@ -10,7 +10,8 @@ for someone, the facilitator runs it and the table works through them.
 2. **Get this folder.** Clone the kit repository, or open the shared copy provided.
    `[Repository URL / shared location to be filled.]`
 3. **Open the folder in Claude Code.** It will read `CLAUDE.md` automatically. Ask Claude "what is
-   this folder?" to confirm it has the context.
+   this folder?" to confirm it has the context. **Humans: open `CLAUDE.md` and read it too — it's the
+   journey you and the agent both follow.**
 4. **Check the skills are visible.** Ask Claude to list available skills; you should see
    `feature-spec`, `grill-me-with-docs`, `shape-to-slice`, `prototype-kickoff`.
 

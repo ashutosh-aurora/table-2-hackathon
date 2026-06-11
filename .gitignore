@@ -8,3 +8,5 @@ worked-example/current-state/
 context/product-area/*.pdf
 context/product-area/asset-domain-use-cases.md
 context/team-topology/team-apis.md
+worked-example/integration-modes.prototype.html
+worked-example/integration-modes.NOTES.md
