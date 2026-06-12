@@ -26,5 +26,10 @@ Ask the questions one at a time, waiting for feedback on each question before co
 
 If a question can be answered by exploring context in this repo, explore the context instead.
 
-Once completed, handover to the `shape-to-slice` skill to pick a slice of the problem to prototype.
+Once completed, offer the team three moves before handing over:
+- **Forward** — move to `shape-to-slice`.
+- **Deepen** — revisit any field in the frame, or pull from `deeper-questions.md` to pressure-test the problem further.
+- **Back** — return to `land-on-problem` if the framing has revealed the wrong problem was chosen.
+
+Wait for the team to choose before proceeding.
 

@@ -77,3 +77,12 @@ Put the artefacts in the 'feature/prototype' folder.
 - **Annotate for comparison.** If the prototype is to start a conversation or weigh options, show the
   contrast with how things are done today, and give each variant a consistent implications note
   (ownership, coupling, cost, who it serves) so options compare like-for-like.
+
+## Navigation
+
+After each prototype iteration, offer the team three moves:
+- **Forward** — move to `retro` when the table has learned what it came to learn.
+- **Deepen** — run another iteration; use the artefact as a prompt ("what questions does this make you ask?") and feed the answers back in.
+- **Back** — return to `shape-to-slice` if the prototype has revealed the wrong slice was chosen.
+
+Wait for the team to choose before proceeding.

@@ -37,3 +37,12 @@ A short written plan — the table's position, who's doing what, the time alloca
 - Propose, don't prescribe. The plan is the team's to change.
 - Keep prompts light and energising, lightly inspired by Liberating Structures — not a rigid script.
 - Diagnose just enough to point them well; don't turn the diagnosis into the exercise.
+
+## Navigation
+
+Once the plan is saved, offer the team three moves before proceeding:
+- **Forward** — move to `land-on-problem`.
+- **Deepen** — revisit the plan, adjust the time allocation, or explore the table's position further.
+- **Back** — not applicable at the start; ask if the team needs to orient further first.
+
+Wait for the team to choose before proceeding.

@@ -53,3 +53,12 @@ folder. Hand this to the `prototype-kickoff` skill.
 - If the team can't choose a slice because the right *approach* is unknown, that's a design-space
   question — explore it with variants (see `prototype-kickoff`), don't pick blindly.
 - *Optional:* for more shaping rigour, see `deeper-questions.md`.
+
+## Navigation
+
+Once the slice is saved, offer the team three moves before proceeding:
+- **Forward** — move to `prototype-kickoff`.
+- **Deepen** — revisit the slice, consider a different candidate, or pull from `deeper-questions.md`.
+- **Back** — return to `feature-spec` if the framing needs to change before a good slice is possible.
+
+Wait for the team to choose before proceeding.

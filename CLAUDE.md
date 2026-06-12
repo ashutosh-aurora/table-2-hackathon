@@ -99,7 +99,7 @@ you write lean: the concepts and the open questions, not an audit trail.
 
 ## Where to start
 
-- **Team:** start with `plan-the-session` — the agent will shape the day with you (skim `context/one-pager.md` first if you haven't).
+- You MUST start with `plan-the-session` — the agent will shape the day with you. Make sure you are fully familiar with  `context/one-pager.md` so that you have the context.
 - **Facilitator:** also read `RUN-GUIDE.md` (your role: setup, the schedule, the floor, sharing output, troubleshooting).
-- **Agent:** begin at `plan-the-session` unless the team is already mid-journey.
+- **Agent:** when the session starts, or someone asks what they're doing / what this is, read `context/one-pager.md` first and orient them to the journey — explain we're at the start of a prototyping session and what that means — then propose `plan-the-session` as the next move. Do not skip this orientation step, even if it seems obvious.
 - **Setup:** `SETUP.md`. **A complete example of the shape:** `worked-example/`.

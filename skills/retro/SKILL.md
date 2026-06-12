@@ -25,3 +25,11 @@ artefacts.
 
 - The artefacts are kept, not thrown away — they're collaged into Aurora's context after the day.
 - Don't polish at the retro; capture honestly, including what didn't work.
+
+## Navigation
+
+The retro is the end of the journey — there is no Forward. But offer two moves if energy remains:
+- **Deepen** — run another problem or solution loop if the table wants to explore further before closing.
+- **Back** — return to `prototype-kickoff` if the table wants one more iteration before wrapping up.
+
+Wait for the team to confirm they are done before renaming the folder.
