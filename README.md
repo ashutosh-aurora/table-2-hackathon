@@ -27,7 +27,7 @@ By the kind of context and who owns it — tables **consume** some kinds and **a
 | Product-area context | Area / functional leadership | Consume | `context/product-area/` |
 | Team topology / team APIs | Each team | Consume | `context/team-topology/` |
 | Ubiquitous language (glossary) | Shared | Reference | `definitions/` |
-| Skills and templates | Across areas | Use to build | `skills/`, `templates/` |
+| Skills and templates | Across areas | Use to build | `.claude/skills/`, `templates/` |
 | Team-level context | The team | **Author** | `context/team/` |
 | Deliverables (plan, problem, frame, slice, prototype, retro) | The team | **Produce** | `feature/` → renamed to `<idea>/` |
 
@@ -36,7 +36,7 @@ By the kind of context and who owns it — tables **consume** some kinds and **a
 - `CLAUDE.md` — the shared journey the team and agent both follow.
 - `RUN-GUIDE.md` — the facilitator overlay (setup, the day's schedule, the floor, sharing output, troubleshooting).
 - `SETUP.md` — getting Claude Code running and pointed here.
-- `skills/` — `plan-the-session`, `land-on-problem`, `feature-spec`, `shape-to-slice`, `prototype-kickoff`, `retro`.
+- `.claude/skills/` — `plan-the-session`, `land-on-problem`, `feature-spec`, `shape-to-slice`, `prototype-kickoff`, `retro`.
 - `templates/` — `team-context`, `frame`, `slice`.
 - `context/` — business, product-area, team-topology (consumed), team (authored on the day).
 - `context/one-pager.md` — the problem-ideation primer (the lens and criteria for picking a problem).
