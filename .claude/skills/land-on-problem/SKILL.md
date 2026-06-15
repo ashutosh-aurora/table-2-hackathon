@@ -41,3 +41,12 @@ and names it. This loop attacks **value risk** — whether the problem is worth 
 - Don't fabricate the felt pain — if the table can't say who feels it, that's a gap to resolve, not assume.
 - *Optional:* to pressure-test value, pull from `deeper-questions.md`.
 - ALWAYS ask questions one at a time and get a response before asking the next.
+
+## Navigation
+
+Once the problem is chosen and named, offer the team three moves before proceeding:
+- **Forward** — move to `feature-spec` to frame it.
+- **Deepen** — explore more candidate problems, or pull from `deeper-questions.md` to pressure-test value.
+- **Back** — return to `plan-the-session` if the diagnosis or the table's position needs revisiting.
+
+Wait for the team to choose before proceeding.

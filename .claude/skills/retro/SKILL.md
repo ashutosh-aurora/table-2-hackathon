@@ -14,12 +14,15 @@ artefacts.
    - What did you learn — about your problem, your users, or the seams between products / teams?
    - What helped in working this way with AI?
    - **What was missing — where are the gaps in the AI-assisted prototyping workflow itself?**
-   Write the answers to `feature/retro.md`. The third question matters most; its answers improve the
-   workflow for everyone.
-2. **Name and keep the artefacts.** Confirm the idea's name, then **rename the `feature/` folder to that
-   name** (kebab-case). Everything the table produced — plan, problem, frame, slice, prototype, retro —
-   travels with it, traceable to the table.
-3. **Hand off for sharing.** Tell the facilitator the folder is ready to push (see `RUN-GUIDE.md`).
+   Write the answers to the idea folder's `retro.md`. The third question matters most.
+2. **If the table went through the loop quickly** (a fast first pass, or stepping through it as an
+   example), invite reflection on **each step in turn**: how could it have been done differently, and
+   what would you change? Then, if time allows, run another loop applying those changes — that's the
+   forward / deepen / back navigation in action.
+3. **Name and keep each idea.** Confirm the idea's name and **rename its `feature/` working folder to
+   `<idea-name>/`** (kebab-case); everything it produced travels with it. A team may have explored
+   **several ideas** — give each its own named folder. All are **retained locally; no need to commit
+   them back.**
 
 ## Guardrails
 

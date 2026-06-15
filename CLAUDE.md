@@ -8,6 +8,11 @@ move from a large problem to a rough, useful prototype in a day; how many loops 
 - **The team** judges, decides, supplies the real context, and is accountable for the result.
 - **The agent** runs the skills, drafts, surfaces gaps, and proposes a plan — and never fabricates.
 
+**How the agent holds conversations (a hard rule, not a preference):** ask **exactly one question at a
+time**. Send the question, then **stop and wait** for the answer before asking anything else. Never put
+two questions in one message; never present a numbered list of questions to answer at once. (This was
+not always followed before — treat it as a strict constraint governing every skill and every step.)
+
 ## How the day runs
 
 You don't march through fixed stages. You start by planning the day with the agent, then run two
@@ -46,8 +51,9 @@ moves**, rather than pushing ahead:
 - **Deepen** — iterate here, or pull from `deeper-questions.md`, to surface more before moving on.
 - **Back** — return to an earlier step to revise an assumption that now looks wrong.
 
-This is how the two loops actually run — going back to revise the problem, or deepening a solution, is
-expected, not a detour.
+The agent makes these three moves explicit to the team **at the start** (during planning) and offers
+them at the end of every step — so the team always knows it can steer. Going back to revise the problem,
+or deepening a solution, is how the two loops actually run — expected, not a detour.
 
 ## What a win is
 
@@ -55,11 +61,12 @@ A win **reduces one of the four product risks** (after Marty Cagan): **value** (
 **usability** (can people use it), **feasibility** (can we build it), **business viability** (does it
 work for the business). Any artefact counts if it helped the team learn or explain something real.
 
-## Artefacts are kept, not thrown away
+## What we keep: the context and the learning
 
-Build fast and rough — but the artefacts are **not disposable**. They're saved in `feature/` (renamed to
-your idea's name at the retro) and collaged afterwards into Aurora's shared context. The *learning* is
-the point, and the artefact carries it.
+The prototype itself stays **rough and throwaway** — it matters less. What we **keep** is the *context*
+the table built and *what the loops taught them*: the framed problem, the questions and gaps surfaced,
+the retro. Each idea's `<idea-name>/` folder retains that (a team may keep several), local — **no need to
+commit it back** — and it's collaged into Aurora's shared context after the day.
 
 ## The kinds of context here, and who owns them
 
@@ -73,7 +80,7 @@ The team **consumes** some context and **authors** the rest. Knowing which is wh
 | Ubiquitous language — the agreed names for things | Reference | `definitions/glossary.md` |
 | Skills and templates — reusable ways to build well | Use | `.claude/skills/`, `templates/` |
 | Team-level context — this table's success criteria, users, ways of working | **Author** | `context/team/` |
-| Your deliverables — plan, problem, frame, slice, prototype, retro | **Produce** | `feature/` (renamed to `<your-idea>/` at the retro) |
+| Your deliverables — plan, problem, frame, slice, prototype, retro | **Produce** | one `<idea-name>/` folder per idea (a team may keep several), retained locally |
 
 > **For Claude Code:** when a user invokes a skill by name (e.g. "use the land-on-problem skill"),
 > always look for it in `.claude/skills/<name>/SKILL.md` in this repo first. These are project-local
@@ -85,6 +92,10 @@ Treat thin or ambiguous context as a warning sign, not something to build throug
 whether the context it needs is present. If it is not, the skill names the specific gap and who to ask,
 and stops short of assuming. Going to ask the right person is expected, not a failure. Do not fabricate
 context to keep going.
+
+And when you **infer** something the team hasn't said — to frame, slice, or build — **state it as an
+explicit assumption and invite them to correct it.** Don't fold silent inferences into the work: the
+things they didn't say are exactly what they most need to see and review.
 
 Before the day, some context here is deliberately a placeholder — it depends on other people. The loop
 still runs end to end, and the gaps it surfaces are part of what it produces.
@@ -98,7 +109,7 @@ you write lean: the concepts and the open questions, not an audit trail.
 
 ## Where to start
 
-- You MUST start with `plan-the-session` — the agent will shape the day with you. Make sure you are fully familiar with  `context/one-pager.md` so that you have the context.
+- **Team:** you MUST start with `plan-the-session` — the agent will shape the day with you. Make sure you're familiar with `context/one-pager.md` for the context.
 - **Facilitator:** also read `RUN-GUIDE.md` (your role: setup, the schedule, the floor, sharing output, troubleshooting).
 - **Agent:** when the session starts, or someone asks what they're doing / what this is, read `context/one-pager.md` first and orient them to the journey — explain we're at the start of a prototyping session and what that means — then propose `plan-the-session` as the next move. Do not skip this orientation step, even if it seems obvious.
 - **Setup:** `SETUP.md`. **A complete example of the shape:** `worked-example/`.

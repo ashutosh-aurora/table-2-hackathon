@@ -30,6 +30,13 @@ prototype.
 - **Feasibility** (can we build it): [note]
 - **Business viability** (does it work for the business): [note]
 
+## Assumptions (inferred — please check)
+
+What the agent inferred but the team did **not** explicitly state. These are exactly the things to
+review: confirm or correct each before relying on the frame.
+
+- [inferred assumption] — confirm / correct
+
 ## Context gaps
 
 Context you needed but did not have, and who owns the answer. A gap recorded here is a real output, not

@@ -26,6 +26,10 @@ Ask the questions one at a time, waiting for feedback on each question before co
 
 If a question can be answered by exploring context in this repo, explore the context instead.
 
+When you fill the frame, **separate what the team stated from what you inferred** — surface every
+inferred assumption explicitly in the frame's *Assumptions* section and have the team confirm or correct
+it before the frame is final.
+
 Once completed, offer the team three moves before handing over:
 - **Forward** — move to `shape-to-slice`.
 - **Deepen** — revisit any field in the frame, or pull from `deeper-questions.md` to pressure-test the problem further.

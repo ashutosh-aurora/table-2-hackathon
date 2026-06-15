@@ -20,7 +20,7 @@ are *yours* as facilitator: setup, the schedule, being the floor, sharing the ou
 | 13:30–15:30 | Solution loop — build & iterate (`shape-to-slice`, `prototype-kickoff`) |
 | 15:30–16:00 | Buffer / break |
 | 16:00–17:00 | Voting / share-back |
-| 17:00–17:30 | Retro (`retro`) — then push the table's folder (below) |
+| 17:00–17:30 | Retro (`retro`) — then name & keep each idea folder |
 
 The agent proposes a plan and time allocation per table (`plan-the-session`). Your job is to keep the
 table roughly on these boxes and to decide, with them, how many loops to run — the journey is adaptive,
@@ -36,20 +36,12 @@ experience. No table loses time to one person's setup.
 When a team can't answer something because the context isn't there, that's a finding, not a blocker.
 Help them name the gap and who owns the answer, rather than letting them assume.
 
-## Sharing the output (end of day)
+## Keeping the output
 
-Everything the table made lives in `feature/`, renamed to the idea's name at the retro. To share it
-**without 21 tables colliding on `main`**, push a branch named after the idea to this same repo (no
-separate repo needed):
-
-```
-git checkout -b table/<idea-name>
-git add <idea-name>/ && git commit -m "<idea-name> — offsite output"
-git push -u origin table/<idea-name>
-```
-
-Branches don't conflict, so every table pushes independently. **You** run this, so nobody needs to know
-git. Pooling and collage into Aurora's context happen **after** the day, once every table's branch is in.
+Everything a table makes is kept as **local idea folders** — each idea in its own `<idea-name>/` folder
+(a team may explore several; all are retained). **No need to commit anything back.** The folders stay on
+the machine, traceable to the table, and get collaged into Aurora's context after the day. (If you ever
+want to share one, you can — but it isn't required.)
 
 ## Troubleshooting
 

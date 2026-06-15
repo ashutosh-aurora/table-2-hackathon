@@ -1,6 +1,6 @@
 ---
 name: prototype-kickoff
-description: Help a team start a throwaway prototype of a chosen slice, in whatever medium most cheaply reduces the target product risk. Use when a team has a single slice and needs to make it tangible quickly. Medium-agnostic; not a prescriptive build process.
+description: Help a team start a rough, throwaway prototype of a chosen slice, in whatever medium most cheaply reduces the target product risk. Use when a team has a single slice and needs to make it tangible quickly. Medium-agnostic; not a prescriptive build process.
 ---
 
 # Prototype kickoff
@@ -32,8 +32,9 @@ it. Thin context is a signal.
    - a clickable mock or wireframe,
    - a worked calculation or model sketch,
    - a vivid written walkthrough with realistic fake data to show another team.
-3. **Set a tight timebox** and start building immediately. Keep it rough and fast — but the artefact is
-   **kept**, not thrown away (it's collaged into Aurora's context later); skip the polish, not the learning.
+3. **Set a tight timebox** and start building immediately. Keep it **rough and throwaway** — don't
+   polish. The prototype itself matters less; what's kept and collaged is the **context you built and
+   what the loop taught you**, not the artefact.
 4. **Capture what it showed.** When the box is up, write two or three lines: what the prototype
    taught the team, or how it helps them explain the idea. That learning is the deliverable, not the
    artefact.

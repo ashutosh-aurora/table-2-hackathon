@@ -12,19 +12,23 @@ them live.)
 
 ## What to do
 
-1. **Gather "what you bring to the table."** Ask each person to write a short answer; the table submits
-   them as a group:
+1. **Always interview the table to start** — this is the first thing, every time. Ask **one question,
+   wait for the answer, then the next** (never list them); each person writes what they bring, and the
+   table submits as a group:
    - What team are you part of? Who are your end users — internal or external? How well do you
      understand what they need from your team?
    - What does your team want to achieve? Is there a mission you can state so others at Aurora get it?
-2. **Read the table's position** — how close is it to client use cases?
+2. **Tell the team how to steer.** Make clear that at any point they can say **forward** (next step),
+   **deepen** (go further here, or use `deeper-questions.md`), or **back** (revise an earlier
+   assumption). They set the pace and how many loops to run.
+3. **Read the table's position** — how close is it to client use cases?
    - **Close to use cases** → it will hunt for product-integration opportunities in client use cases.
    - **A capability team, further from use cases** → it will hunt for internal interface / process
      improvement, within the team or with the adjacent end-user team (not an external client).
    - If unsure, ask one or two clarifying questions rather than guessing.
-3. **On a mixed table, assign prompts to people.** If the table spans backgrounds, give specific
+4. **On a mixed table, assign prompts to people.** If the table spans backgrounds, give specific
    individuals the prompt that fits them, so everyone has a way in.
-4. **Propose a plan and time allocation** within the day's timeboxes (see `RUN-GUIDE.md`): how long on
+5. **Propose a plan and time allocation** within the day's timeboxes (see `RUN-GUIDE.md`): how long on
    the problem loop, when to start building, how many loops to attempt. Offer it; the team adjusts.
 
 ## Output
