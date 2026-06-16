@@ -15,16 +15,14 @@ are *yours* as facilitator: setup, the schedule, being the floor, sharing the ou
 | Time | What |
 |---|---|
 | 09:30–11:00 | Strategy session (Stuart / Mateusz) |
-| 11:15–12:45 | Problem loop — find the right problem (`plan-the-session`, then `land-on-problem`) |
+| 11:15–12:45 | Problem set up: connect the strategy session to day-to-day work; walk through an example of AI-assisted prototyping; teams complete the prerequisites (team-formation conversations, Claude setup) |
 | 12:45–13:30 | Lunch |
-| 13:30–15:30 | Solution loop — build & iterate (`shape-to-slice`, `prototype-kickoff`) |
-| 15:30–16:00 | Buffer / break |
-| 16:00–17:00 | Voting / share-back |
-| 17:00–17:30 | Retro (`retro`) — then name & keep each idea folder |
+| 13:30–16:30 | Hackathon: iterate as deeply or as many times as you wish |
+| 16:30–17:30 | Voting, share-back, and wrap-up: name and keep each idea folder |
 
-The agent proposes a plan and time allocation per table (`plan-the-session`). Your job is to keep the
-table roughly on these boxes and to decide, with them, how many loops to run — the journey is adaptive,
-not a fixed sequence.
+Each table starts the agent with `plan-the-session`, which diagnoses the table and proposes a plan and time allocation. From there the agent facilitates the loops (find the problem, then the solution) with light steering.
+
+Your job is to unblock the table when they get stuck, let them iterate over as many different ideas or solutions as they want, and even drive "off road" where your experience and their appetite support it. The journey is adaptive, not a fixed sequence.
 
 ## You are the guaranteed floor
 
