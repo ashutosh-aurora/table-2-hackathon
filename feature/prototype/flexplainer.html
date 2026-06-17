@@ -115,15 +115,14 @@
             flex-shrink: 0;
         }
         .hero-logo {
-            width: 72px; height: 79px;
+            width: 80px; height: 80px;
             background: transparent;
-            border-radius: 0;
             flex-shrink: 0;
             cursor: pointer;
             user-select: none;
         }
-        .hero-logo:hover { filter: brightness(1.2); }
-        .hero-logo svg { display: block; width: 100%; height: 100%; overflow: visible; }
+        .hero-logo:hover { filter: brightness(1.15); }
+        .hero-logo canvas, .hero-logo img { display: block; width: 100%; height: 100%; }
         .hero-wordmark {
             display: flex;
             flex-direction: column;
@@ -484,90 +483,9 @@
 <div class="main">
     <!-- Hero -->
     <div class="hero">
-        <div class="hero-logo" onclick="colinWave()" title="Click me!">
-            <svg viewBox="0 0 100 110" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                    <marker id="colinArrow" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto">
-                        <path d="M0,0 L5,2.5 L0,5 Z" fill="#f5a623"/>
-                    </marker>
-                </defs>
-                <!-- Battery tab -->
-                <rect x="34" y="1" width="32" height="10" rx="4" fill="#080a10" stroke="#f5a623" stroke-width="2.5"/>
-                <!-- Battery body -->
-                <rect x="3" y="8" width="94" height="100" rx="13" fill="#080a10" stroke="#f5a623" stroke-width="3"/>
-
-                <!-- NECK -->
-                <path d="M42 84 L41 94 Q50 97 59 94 L58 84Z" fill="#f5a623"/>
-                <path d="M44 87 Q50 90 56 87 L56 94 Q50 96 44 94Z" fill="#c47d10" opacity="0.35"/>
-
-                <!-- FACE base -->
-                <path d="M27 61 Q27 43 35 35 Q42 27 50 26 Q58 27 65 35 Q73 43 73 61 Q72 74 64 81 Q57 88 50 88 Q43 88 36 81 Q28 74 27 61Z" fill="#f5a623"/>
-
-                <!-- HAIR — dark swept mass + amber highlight strands -->
-                <path d="M35 35 Q38 21 50 19 Q63 19 66 35 Q58 27 50 28 Q42 27 36 35Z" fill="#080a10"/>
-                <path d="M27 61 Q27 46 35 35 Q31 43 29 53 Q28 58 28 66Z" fill="#080a10"/>
-                <path d="M65 35 Q73 43 73 58 Q71 50 69 43 Q68 38 66 36Z" fill="#080a10"/>
-                <path d="M37 29 Q44 20 55 19 Q63 19 67 25" stroke="#f5a623" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-                <path d="M38 24 Q45 17 55 17 Q60 17 64 20" stroke="#f5a623" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.5"/>
-
-                <!-- EARS -->
-                <path d="M27 62 Q24 59 23 64 Q23 69 27 70Z" fill="#f5a623"/>
-                <path d="M73 62 Q76 59 77 64 Q77 69 73 70Z" fill="#f5a623"/>
-
-                <!-- EYEBROWS — bold, slightly arched -->
-                <path d="M30 50 Q37 45 45 47" stroke="#080a10" stroke-width="4" fill="none" stroke-linecap="round"/>
-                <path d="M55 47 Q63 45 70 50" stroke="#080a10" stroke-width="4" fill="none" stroke-linecap="round"/>
-
-                <!-- EYES — dark sockets with iris + catch-light -->
-                <ellipse cx="38" cy="58" rx="7" ry="5.5" fill="#080a10"/>
-                <ellipse cx="37" cy="57" rx="4" ry="3.5" fill="#f5a623" opacity="0.18"/>
-                <circle cx="39" cy="58" r="2.8" fill="#080a10"/>
-                <circle cx="40.5" cy="56" r="1.2" fill="#f5a623" opacity="0.55"/>
-                <ellipse cx="62" cy="58" rx="7" ry="5.5" fill="#080a10"/>
-                <ellipse cx="61" cy="57" rx="4" ry="3.5" fill="#f5a623" opacity="0.18"/>
-                <circle cx="63" cy="58" r="2.8" fill="#080a10"/>
-                <circle cx="64.5" cy="56" r="1.2" fill="#f5a623" opacity="0.55"/>
-
-                <!-- NOSE — bridge curve + nostrils -->
-                <path d="M47 63 Q45 69 44 72 Q47 74 50 74 Q53 74 56 72 Q55 69 53 63" stroke="#080a10" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.75"/>
-                <ellipse cx="45.5" cy="72" rx="2.2" ry="1.6" fill="#080a10" opacity="0.7"/>
-                <ellipse cx="54.5" cy="72" rx="2.2" ry="1.6" fill="#080a10" opacity="0.7"/>
-
-                <!-- SMILE — open, big, teeth showing -->
-                <path d="M34 76 Q42 71 50 72 Q58 71 66 76" stroke="#080a10" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-                <path d="M35 77 Q50 87 65 77 Q57 83 50 83 Q43 83 35 77Z" fill="#080a10"/>
-                <path d="M38 83 Q50 87 62 83 Q56 86 50 87 Q44 86 38 83Z" fill="#c47d10" opacity="0.4"/>
-                <path d="M32 73 Q31 76 32 80" stroke="#080a10" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.5"/>
-                <path d="M68 73 Q69 76 68 80" stroke="#080a10" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.5"/>
-
-                <!-- SUIT -->
-                <path d="M15 108 Q16 86 28 82 Q37 79 42 85 L50 79 L58 85 Q63 79 72 82 Q84 86 85 108Z" fill="#f5a623"/>
-                <path d="M42 85 L50 96 L50 79Z" fill="#080a10"/>
-                <path d="M58 85 L50 96 L50 79Z" fill="#080a10"/>
-                <!-- Bow tie -->
-                <path d="M43 81 Q47 79 50 81 L53 78 Q57 80 57 82 Q54 83 51 81 L50 84 L49 81 Q46 83 43 82 Q43 80 43 81Z" fill="#080a10"/>
-
-                <!-- Colin text + arrow -->
-                <text x="7" y="22" font-family="Georgia,serif" font-size="9" font-style="italic" font-weight="bold" fill="#f5a623">Colin</text>
-                <path d="M23 23 Q30 33 35 43" stroke="#f5a623" stroke-width="1.5" fill="none" stroke-linecap="round" marker-end="url(#colinArrow)"/>
-
-                <!-- Network graph -->
-                <circle cx="73" cy="38" r="3.5" fill="#f5a623"/>
-                <circle cx="84" cy="28" r="3.5" fill="#f5a623"/>
-                <circle cx="84" cy="48" r="3.5" fill="#f5a623"/>
-                <circle cx="92" cy="38" r="3" fill="none" stroke="#f5a623" stroke-width="2"/>
-                <line x1="73" y1="38" x2="84" y2="28" stroke="#f5a623" stroke-width="1.5"/>
-                <line x1="73" y1="38" x2="84" y2="48" stroke="#f5a623" stroke-width="1.5"/>
-                <line x1="84" y1="38" x2="92" y2="38" stroke="#f5a623" stroke-width="1.5" stroke-dasharray="2.5,2"/>
-
-                <!-- Right arm (waving) — pivot at (58,85) -->
-                <g id="colin-wave-arm">
-                    <path d="M58 85 Q66 82 73 77 Q79 71 81 65 Q83 58 80 55 Q77 52 75 56 Q73 60 69 64 Q64 68 57 71" fill="#f5a623"/>
-                    <path d="M80 55 Q84 49 83 46" stroke="#f5a623" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-                    <path d="M78 53 Q82 46 81 43" stroke="#f5a623" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-                    <path d="M78 57 Q82 52 82 49" stroke="#f5a623" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-                </g>
-            </svg>
+        <div class="hero-logo" id="colinLogo" title="Click to wave!">
+            <canvas id="colinCanvas"></canvas>
+            <img id="colinGif" src="colin.gif" alt="Colin waving" style="display:none">
         </div>
         <div class="hero-wordmark">
             <div class="hero-title">Flex<span>plainer</span></div>
@@ -1075,24 +993,35 @@ function handleSubmit(e) {
     askQuestion(document.getElementById('chatInput').value);
 }
 
-function colinWave() {
-    const arm = document.getElementById('colin-wave-arm');
-    if (arm._waving) return;
-    arm._waving = true;
-    const angles = [0, -28, 18, -28, 14, -20, 5, 0];
-    const duration = 900;
-    const start = performance.now();
-    (function animate(now) {
-        const t = Math.min((now - start) / duration, 1);
-        const fi = t * (angles.length - 1);
-        const i = Math.min(Math.floor(fi), angles.length - 2);
-        const frac = fi - i;
-        const angle = angles[i] + (angles[i + 1] - angles[i]) * frac;
-        arm.setAttribute('transform', `rotate(${angle.toFixed(2)},58,83)`);
-        if (t < 1) { requestAnimationFrame(animate); }
-        else { arm.setAttribute('transform', ''); arm._waving = false; }
-    })(start);
-}
+(function () {
+    const logo   = document.getElementById('colinLogo');
+    const canvas = document.getElementById('colinCanvas');
+    const gif    = document.getElementById('colinGif');
+    const GIF_MS = 3000; // adjust to match your GIF's duration
+
+    // Draw first frame to canvas so it appears paused on load
+    const loader = new Image();
+    loader.onload = function () {
+        canvas.width  = loader.naturalWidth;
+        canvas.height = loader.naturalHeight;
+        canvas.getContext('2d').drawImage(loader, 0, 0);
+    };
+    loader.src = 'colin.gif';
+
+    logo.addEventListener('click', function () {
+        if (logo._playing) return;
+        logo._playing = true;
+        canvas.style.display = 'none';
+        gif.src = '';                 // reset to frame 1
+        gif.src = 'colin.gif';
+        gif.style.display = 'block';
+        setTimeout(function () {
+            gif.style.display = 'none';
+            canvas.style.display = 'block';
+            logo._playing = false;
+        }, GIF_MS);
+    });
+}());
 
 // ─── Tab switching ────────────────────────────────────────────────────────────
 
