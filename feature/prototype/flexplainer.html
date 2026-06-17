@@ -404,6 +404,43 @@
         .api-bar button:hover { background: rgba(245,166,35,0.1); }
         .api-bar a { color: var(--accent); text-decoration: none; }
         .api-bar.hidden { display: none; }
+
+        /* ── Day selector ── */
+        .day-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 20px;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-panel);
+            flex-shrink: 0;
+        }
+        .day-nav {
+            width: 28px; height: 28px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            color: var(--text-dim);
+            cursor: pointer;
+            font-size: 18px;
+            line-height: 1;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+            transition: border-color 0.15s, color 0.15s;
+        }
+        .day-nav:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+        .day-nav:disabled { opacity: 0.3; cursor: default; }
+        #dayPicker {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            color: var(--text);
+            font-size: 12px;
+            padding: 4px 8px;
+            cursor: pointer;
+            margin-left: 4px;
+        }
+        #dayPicker:focus { outline: none; border-color: var(--accent); }
     </style>
 </head>
 <body>
@@ -500,6 +537,15 @@
         <button onclick="checkBridge()">Connect</button>
         <span id="bridgeStatus"></span>
         <span style="margin-left:auto">or <a href="#" onclick="useDemoMode(); return false;">use demo mode</a></span>
+    </div>
+
+    <!-- Day selector -->
+    <div class="day-bar">
+        <button class="day-nav" id="prevDay" onclick="changeDay(-1)" disabled>&#8249;</button>
+        <span id="dayLabel" style="font-size:13px;font-weight:500;color:var(--text)">Mon 15 Jan 2024</span>
+        <span style="font-size:11px;color:var(--text-muted);margin-left:4px">· 100 MW / 2h BESS · GB · Scheduling phase</span>
+        <select id="dayPicker" onchange="selectDay(+this.value)"></select>
+        <button class="day-nav" id="nextDay" onclick="changeDay(1)" disabled>&#8250;</button>
     </div>
 
     <!-- Sub-tabs -->
@@ -610,7 +656,8 @@ const HH = Array.from({length: 48}, (_, i) => {
     return `${h}:${m}`;
 });
 
-const PRICES = [
+// Exact prices for 15 Jan 2024 (GB, validated)
+const JAN15_PRICES = [
     34.2, 35.8, 37.1, 38.6, 38.9, 39.2, 40.1, 41.8,
     52.4, 53.1, 51.8, 50.2, 35.2, 28.4, 22.6, 18.9,
     17.1, 18.4, 22.8, 26.0, 30.2, 35.6, 41.8, 47.4,
@@ -622,15 +669,58 @@ const PRICES = [
 const UPPER = 51.0;
 const LOWER = 26.5;
 
-const BIDS = PRICES.map(p => {
-    if (p >= UPPER) return 0.75;
-    if (p <= LOWER) return -0.75;
-    return null;
-});
+// ─── Multi-day data generator ─────────────────────────────────────────────────
 
-// ─── LLM system prompt ───────────────────────────────────────────────────────
+// Typical UK winter half-hourly price shape (multipliers relative to day base)
+const SHAPE = [
+    // 00:00–05:30 overnight
+    0.72, 0.70, 0.68, 0.67, 0.66, 0.67, 0.68, 0.70, 0.72, 0.74, 0.76, 0.78,
+    // 06:00–08:30 morning ramp
+    0.88, 1.05, 1.35, 1.50, 1.55, 1.45,
+    // 09:00–11:30 settled morning
+    1.20, 1.05, 0.95, 0.90, 0.88, 0.87,
+    // 12:00–13:30 lunchtime dip
+    0.86, 0.85, 0.87, 0.89,
+    // 14:00–16:00 afternoon
+    0.92, 0.96, 1.02, 1.10, 1.20,
+    // 16:30–19:30 evening peak
+    1.45, 1.65, 1.75, 1.80, 1.70, 1.55, 1.40,
+    // 20:00–21:30 evening decline
+    1.20, 1.05, 0.95, 0.88,
+    // 22:00–23:30 late night
+    0.82, 0.79, 0.77, 0.76,
+];
 
-const SYSTEM = `You are Flexplainer, an AI assistant that explains Chronos battery dispatch decisions to Aurora Energy Research analysts.
+function seededRand(seed) {
+    let s = (seed ^ 0xdeadbeef) >>> 0;
+    return () => {
+        s = Math.imul(s ^ (s >>> 15), s | 1);
+        s ^= s + Math.imul(s ^ (s >>> 7), s | 61);
+        return ((s ^ (s >>> 14)) >>> 0) / 0xffffffff;
+    };
+}
+
+function generateDayPrices(d) {
+    if (d === 15) return [...JAN15_PRICES];
+    const rand = seededRand(d * 91337 + 42);
+    const base = 32 + rand() * 36;
+    // ~15% chance of cold-snap (high) or windy (low) day
+    const mult = rand() < 0.15 ? 1.6 + rand() * 0.4
+               : rand() < 0.15 ? 0.3 + rand() * 0.35
+               : 0.85 + rand() * 0.35;
+    return SHAPE.map(s => Math.max(2, +((base * mult * s) * (0.91 + rand() * 0.18)).toFixed(1)));
+}
+
+function bidsFromPrices(prices) {
+    return prices.map(p => p >= UPPER ? 0.75 : p <= LOWER ? -0.75 : null);
+}
+
+// Jan 1 2024 = Monday
+const DOW = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+function formatDay(d) { return `${DOW[(d - 1) % 7]} ${d} Jan 2024`; }
+
+function buildSystem(prices, bids, label) {
+    return `You are Flexplainer, an AI assistant that explains Chronos battery dispatch decisions to Aurora Energy Research analysts.
 
 CHRONOS OVERVIEW
 Chronos is Aurora's asset dispatch model for batteries (BESS). Key concepts:
@@ -640,9 +730,9 @@ Chronos is Aurora's asset dispatch model for batteries (BESS). Key concepts:
 - FakeVOM (€3.5/MWh): calibration parameter for cycle cost — battery only bids when price spread justifies cycling.
 - State of charge (SoC): 0–1. Can only export if charged; can only import if there is room.
 
-TODAY'S SIMULATION — GB, 15 Jan 2024, 100 MW / 2h BESS
+TODAY'S SIMULATION — GB, ${label}, 100 MW / 2h BESS
 Half-hourly data (index | time | DA price | bid):
-${HH.map((t, i) => `${String(i).padStart(2)} | ${t} | €${PRICES[i].toFixed(1)}/MWh | ${BIDS[i] === 0.75 ? '+0.75 export' : BIDS[i] === -0.75 ? '-0.75 import' : 'no bid'}`).join('\n')}
+${HH.map((t, i) => `${String(i).padStart(2)} | ${t} | €${prices[i].toFixed(1)}/MWh | ${bids[i] === 0.75 ? '+0.75 export' : bids[i] === -0.75 ? '-0.75 import' : 'no bid'}`).join('\n')}
 
 RESPONSE FORMAT — return ONLY valid JSON, no other text:
 {
@@ -651,6 +741,13 @@ RESPONSE FORMAT — return ONLY valid JSON, no other text:
   "timeWindowEnd": <integer 0–47>,
   "keyFacts": ["fact 1", "fact 2", "fact 3"]
 }`;
+}
+
+// ─── Active day state ─────────────────────────────────────────────────────────
+
+let selectedDay   = 15;
+let currentPrices = generateDayPrices(15);
+let currentBids   = bidsFromPrices(currentPrices);
 
 // ─── Bridge / mode ───────────────────────────────────────────────────────────
 
@@ -663,7 +760,7 @@ let demoMode    = false;
 
 // Message history — the full conversation sent on every request
 const history = [
-    { role: 'system', content: SYSTEM }
+    { role: 'system', content: buildSystem(currentPrices, currentBids, formatDay(selectedDay)) }
 ];
 
 async function checkBridge() {
@@ -714,7 +811,7 @@ const chart = new Chart(ctx, {
             {
                 type: 'line',
                 label: 'Day-ahead price (€/MWh)',
-                data: PRICES,
+                data: currentPrices,
                 borderColor: '#f5a623',
                 backgroundColor: 'transparent',
                 borderWidth: 2,
@@ -750,7 +847,7 @@ const chart = new Chart(ctx, {
             {
                 type: 'bar',
                 label: 'Scheduled bid (MW/MW_asset)',
-                data: BIDS,
+                data: currentBids,
                 backgroundColor: 'rgba(200,200,220,0.7)',
                 borderColor: 'rgba(200,200,220,0.9)',
                 borderWidth: 1,
@@ -801,7 +898,7 @@ const chart = new Chart(ctx, {
             y: {
                 position: 'left',
                 title: { display: true, text: 'Price (€/MWh)', font: { size: 11 }, color: '#64748b' },
-                min: 0, max: 75,
+                min: 0, max: Math.ceil(Math.max(...currentPrices) / 10) * 10 + 10,
                 ticks: { font: { size: 11 }, color: '#64748b' },
                 grid: { color: '#1a1f2e' }
             },
@@ -837,6 +934,59 @@ function clearHighlight() {
     chart.update('none');
     document.getElementById('windowLabel').textContent = 'Day-ahead price · thresholds · scheduled bids';
 }
+
+// ─── Day navigation ───────────────────────────────────────────────────────────
+
+function selectDay(d) {
+    selectedDay   = d;
+    currentPrices = generateDayPrices(d);
+    currentBids   = bidsFromPrices(currentPrices);
+    const label   = formatDay(d);
+
+    // Update chart
+    chart.data.datasets[0].data = currentPrices;
+    chart.data.datasets[3].data = currentBids;
+    chart.options.scales.y.max  = Math.ceil(Math.max(...currentPrices) / 10) * 10 + 10;
+    chart.update('active');
+
+    // Update selector controls
+    document.getElementById('dayLabel').textContent = label;
+    document.getElementById('dayPicker').value = d;
+    document.getElementById('prevDay').disabled = (d <= 1);
+    document.getElementById('nextDay').disabled = (d >= 31);
+
+    // Reset chat for new day
+    document.getElementById('messages').innerHTML =
+        `<div class="message assistant"><div class="bubble">
+            This is a Chronos simulation for a 100 MW / 2h battery in GB, ${label}.<br><br>
+            Ask me why the battery made any scheduling decision — I can explain DA bids,
+            price thresholds, fakeVOM, and state of charge at any timestamp.
+        </div></div>`;
+
+    history.length = 0;
+    history.push({ role: 'system', content: buildSystem(currentPrices, currentBids, label) });
+
+    clearHighlight();
+}
+
+function changeDay(delta) {
+    const d = selectedDay + delta;
+    if (d >= 1 && d <= 31) selectDay(d);
+}
+
+// Populate the day-picker dropdown and enable nav buttons
+(function initDayPicker() {
+    const sel = document.getElementById('dayPicker');
+    for (let d = 1; d <= 31; d++) {
+        const opt = document.createElement('option');
+        opt.value = d;
+        opt.textContent = formatDay(d);
+        if (d === 15) opt.selected = true;
+        sel.appendChild(opt);
+    }
+    document.getElementById('prevDay').disabled = false;
+    document.getElementById('nextDay').disabled = false;
+}());
 
 // ─── LLM ─────────────────────────────────────────────────────────────────────
 
