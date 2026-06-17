@@ -1,0 +1,3 @@
+# Problem — Flexplainer
+
+Clients and internal users who run Chronos simulations get results, but not reasoning. The simulation makes hundreds of trading decisions — when to charge, when to discharge, which markets to prioritise, how price thresholds were set — but none of that decision trail is visible. Today you get a gross margin number; you don't get a step-by-step account of why the battery behaved the way it did at any given timestamp. That makes results hard to trust, hard to explain, and hard to challenge. The opportunity is a view into a Chronos simulation that lets you step through the decision-making — scheduling phase choices, dispatch phase trades, price thresholds — timestamp by timestamp.

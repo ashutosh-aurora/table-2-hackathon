@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flexplainer — EOS</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+    <style>
+        :root {
+            --bg:        #0b0d14;
+            --bg-panel:  #10131c;
+            --bg-hover:  #161925;
+            --border:    #1e2436;
+            --border-hi: #2a3150;
+            --text:      #e2e8f0;
+            --text-muted:#64748b;
+            --text-dim:  #94a3b8;
+            --accent:    #f5a623;
+            --accent-dim:#b87d1a;
+            --sidebar-w: 220px;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            height: 100vh;
+            display: flex;
+            overflow: hidden;
+            font-size: 13px;
+        }
+
+        /* ── Sidebar ── */
+        .sidebar {
+            width: var(--sidebar-w);
+            min-width: var(--sidebar-w);
+            background: #080a10;
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+        .logo {
+            padding: 18px 16px 14px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo-mark {
+            width: 32px; height: 32px;
+            background: var(--accent);
+            border-radius: 6px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 14px; color: #000; letter-spacing: -0.5px;
+            flex-shrink: 0;
+        }
+        .logo-text { line-height: 1.1; }
+        .logo-text .top { font-size: 9px; letter-spacing: 0.18em; color: var(--text-muted); text-transform: uppercase; }
+        .logo-text .bot { font-size: 15px; font-weight: 700; color: var(--text); letter-spacing: 0.05em; }
+
+        .nav-section { padding: 18px 0 6px; }
+        .nav-section-label {
+            padding: 0 14px 6px;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 7px 14px;
+            color: var(--text-dim);
+            cursor: pointer;
+            border-left: 2px solid transparent;
+            font-size: 13px;
+        }
+        .nav-item:hover { background: var(--bg-hover); color: var(--text); }
+        .nav-item.active {
+            color: var(--accent);
+            border-left-color: var(--accent);
+            background: rgba(245,166,35,0.06);
+        }
+        .nav-item .icon { width: 16px; flex-shrink: 0; opacity: 0.7; }
+        .nav-item.active .icon { opacity: 1; }
+        .nav-sub { padding: 3px 14px 3px 40px; color: var(--text-muted); font-size: 11.5px; }
+        .nav-sub:hover { color: var(--text-dim); }
+
+        .nav-bottom {
+            margin-top: auto;
+            border-top: 1px solid var(--border);
+            padding: 8px 0;
+        }
+
+        /* ── Main ── */
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Hero header */
+        .hero {
+            background: #080a10;
+            border-bottom: 1px solid var(--border);
+            padding: 18px 28px 16px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            flex-shrink: 0;
+        }
+        .hero-logo {
+            width: 72px; height: 79px;
+            background: transparent;
+            border-radius: 0;
+            flex-shrink: 0;
+            cursor: pointer;
+            user-select: none;
+        }
+        .hero-logo:hover { filter: brightness(1.2); }
+        .hero-logo svg { display: block; width: 100%; height: 100%; overflow: visible; }
+        .hero-wordmark {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .hero-title {
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: var(--text);
+            line-height: 1;
+        }
+        .hero-title span { color: var(--accent); }
+        .hero-sub {
+            font-size: 12px;
+            color: var(--text-muted);
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .chips { display: flex; gap: 6px; flex-wrap: wrap; }
+        .chip {
+            padding: 3px 10px;
+            border: 1px solid var(--border-hi);
+            border-radius: 4px;
+            font-size: 11px;
+            color: var(--text-dim);
+        }
+
+        /* Sub-tabs */
+        .subtabs {
+            padding: 10px 20px 0;
+            display: flex;
+            gap: 0;
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+        .subtab {
+            padding: 8px 16px;
+            font-size: 13px;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+        }
+        .subtab:hover { color: var(--text); }
+        .subtab.active { color: var(--text); border-bottom-color: var(--text); }
+
+        /* Content area */
+        .content {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+            gap: 0;
+        }
+
+        /* ── Chat panel ── */
+        .chat-panel {
+            width: 360px;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid var(--border);
+            background: var(--bg-panel);
+            flex-shrink: 0;
+        }
+        .panel-header {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        .messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border) transparent;
+        }
+        .messages::-webkit-scrollbar { width: 4px; }
+        .messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+        .message { display: flex; flex-direction: column; }
+        .message.user { align-items: flex-end; }
+        .message.assistant { align-items: flex-start; }
+
+        .bubble {
+            padding: 9px 13px;
+            font-size: 13px;
+            line-height: 1.55;
+            max-width: 310px;
+            border-radius: 8px;
+        }
+        .message.user .bubble {
+            background: var(--accent);
+            color: #000;
+            font-weight: 500;
+            border-radius: 8px 8px 2px 8px;
+        }
+        .message.assistant .bubble {
+            background: var(--bg-hover);
+            color: var(--text);
+            border: 1px solid var(--border-hi);
+            border-radius: 8px 8px 8px 2px;
+        }
+
+        .key-facts {
+            margin-top: 6px;
+            background: rgba(245,166,35,0.06);
+            border: 1px solid rgba(245,166,35,0.18);
+            border-radius: 6px;
+            padding: 7px 11px;
+            font-size: 12px;
+            max-width: 310px;
+            list-style: none;
+        }
+        .key-facts li { padding: 2px 0; color: var(--text-dim); }
+        .key-facts li::before { content: "→ "; color: var(--accent); font-weight: 700; }
+
+        .hover-hint {
+            margin-top: 4px;
+            font-size: 11px;
+            color: var(--text-muted);
+            padding: 0 2px;
+        }
+
+        .chat-input-area {
+            padding: 10px 12px;
+            border-top: 1px solid var(--border);
+            background: var(--bg);
+            flex-shrink: 0;
+        }
+        .suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 8px;
+        }
+        .suggestion {
+            padding: 3px 9px;
+            background: transparent;
+            border: 1px solid var(--border-hi);
+            border-radius: 4px;
+            font-size: 11.5px;
+            cursor: pointer;
+            color: var(--text-dim);
+        }
+        .suggestion:hover { border-color: var(--accent); color: var(--accent); }
+
+        .input-row { display: flex; gap: 8px; }
+        .input-row input {
+            flex: 1;
+            padding: 7px 12px;
+            background: var(--bg-hover);
+            border: 1px solid var(--border-hi);
+            border-radius: 6px;
+            font-size: 13px;
+            color: var(--text);
+            outline: none;
+        }
+        .input-row input::placeholder { color: var(--text-muted); }
+        .input-row input:focus { border-color: var(--accent); }
+        .input-row button {
+            padding: 7px 16px;
+            background: var(--accent);
+            color: #000;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .input-row button:hover { background: #e09618; }
+        .input-row button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        .loading-msg {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-style: italic;
+            padding: 6px 2px;
+        }
+
+        /* ── Chart panel ── */
+        .chart-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: var(--bg);
+        }
+        .chart-toolbar {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+            gap: 12px;
+        }
+        .window-label {
+            font-size: 12px;
+            color: var(--accent);
+            font-weight: 500;
+        }
+        .dl-btn {
+            padding: 5px 12px;
+            background: transparent;
+            border: 1px solid var(--border-hi);
+            border-radius: 5px;
+            color: var(--text-dim);
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .dl-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .chart-container {
+            flex: 1;
+            padding: 12px 16px 8px;
+            position: relative;
+            min-height: 0;
+        }
+        .chart-meta {
+            padding: 8px 16px;
+            border-top: 1px solid var(--border);
+            font-size: 11.5px;
+            color: var(--text-muted);
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+            flex-shrink: 0;
+            background: var(--bg-panel);
+        }
+        .chart-meta strong { color: var(--text-dim); }
+
+        /* ── API bar ── */
+        .api-bar {
+            background: rgba(245,166,35,0.08);
+            border-bottom: 1px solid rgba(245,166,35,0.25);
+            padding: 7px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 12.5px;
+            color: var(--text-dim);
+            flex-shrink: 0;
+        }
+        .api-bar input {
+            border: 1px solid var(--border-hi);
+            padding: 4px 8px;
+            border-radius: 5px;
+            font-size: 12px;
+            background: var(--bg);
+            color: var(--text);
+            width: 280px;
+            font-family: monospace;
+        }
+        .api-bar button {
+            padding: 4px 12px;
+            border: 1px solid var(--accent);
+            background: transparent;
+            color: var(--accent);
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .api-bar button:hover { background: rgba(245,166,35,0.1); }
+        .api-bar a { color: var(--accent); text-decoration: none; }
+        .api-bar.hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <div class="logo">
+        <div class="logo-mark">EOS</div>
+        <div class="logo-text">
+            <div class="top">Aurora</div>
+            <div class="bot">EOS</div>
+        </div>
+    </div>
+
+    <div class="nav-section">
+        <div class="nav-section-label">Data Dashboards</div>
+        <div class="nav-item">
+            <svg class="icon" viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="8" width="3" height="7"/><rect x="6" y="5" width="3" height="10"/><rect x="11" y="2" width="3" height="13"/></svg>
+            Historical Market Data
+        </div>
+        <div class="nav-item">
+            <svg class="icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="1,12 5,7 9,9 15,3"/></svg>
+            Scenario Explorer
+        </div>
+        <div class="nav-item active">
+            <svg class="icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="3"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2"/></svg>
+            Flexplainer
+        </div>
+        <div class="nav-item">
+            <svg class="icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="14" height="14" rx="1"/><path d="M1 6h14M6 6v9"/></svg>
+            Nodal Explorer: Dashboard
+        </div>
+        <div class="nav-item">
+            <svg class="icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 2a4 4 0 0 1 0 12M2 8h12"/></svg>
+            Nodal Explorer: Maps
+        </div>
+    </div>
+
+    <div class="nav-section">
+        <div class="nav-section-label">Software Applications</div>
+        <div class="nav-item">
+            <svg class="icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="1"/><path d="M5 8h6M8 5v6"/></svg>
+            Origin
+        </div>
+        <div class="nav-sub">Power Market Model</div>
+        <div class="nav-sub" style="padding-top:2px">Run Statistics</div>
+        <div class="nav-item">
+            <svg class="icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2C5 2 2 4 2 8s3 6 6 6 6-3 6-6-3-6-6-6z"/><path d="M8 5v3l2 2"/></svg>
+            Chronos
+        </div>
+        <div class="nav-sub">Battery Valuations</div>
+        <div class="nav-item">
+            <svg class="icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 14c0 0-5-3-5-7a5 5 0 0 1 10 0c0 4-5 7-5 7z"/></svg>
+            Amun
+        </div>
+        <div class="nav-sub">Wind Valuations</div>
+        <div class="nav-item">
+            <svg class="icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="5" r="3"/><path d="M2 14c0-3 2.7-5 6-5s6 2 6 5"/></svg>
+            Solaris
+        </div>
+        <div class="nav-sub">Solar PV Valuations</div>
+    </div>
+
+    <div class="nav-bottom">
+        <div class="nav-item">
+            <svg class="icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.1 3.1l1.4 1.4M11.5 11.5l1.4 1.4M11.5 3.1l-1.4 1.4M4.5 11.5l-1.4 1.4"/></svg>
+            Settings
+        </div>
+        <div class="nav-item">
+            <svg class="icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2H3a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3M10 11l4-3-4-3M14 8H6"/></svg>
+            Logout
+        </div>
+    </div>
+</div>
+
+<!-- Main -->
+<div class="main">
+    <!-- Hero -->
+    <div class="hero">
+        <div class="hero-logo" onclick="colinWave()" title="Click me!">
+            <svg viewBox="0 0 100 110" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <marker id="colinArrow" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto">
+                        <path d="M0,0 L5,2.5 L0,5 Z" fill="#f5a623"/>
+                    </marker>
+                </defs>
+                <!-- Battery tab -->
+                <rect x="34" y="1" width="32" height="10" rx="4" fill="#080a10" stroke="#f5a623" stroke-width="2.5"/>
+                <!-- Battery body -->
+                <rect x="3" y="8" width="94" height="100" rx="13" fill="#080a10" stroke="#f5a623" stroke-width="3"/>
+
+                <!-- NECK -->
+                <path d="M42 84 L41 94 Q50 97 59 94 L58 84Z" fill="#f5a623"/>
+                <path d="M44 87 Q50 90 56 87 L56 94 Q50 96 44 94Z" fill="#c47d10" opacity="0.35"/>
+
+                <!-- FACE base -->
+                <path d="M27 61 Q27 43 35 35 Q42 27 50 26 Q58 27 65 35 Q73 43 73 61 Q72 74 64 81 Q57 88 50 88 Q43 88 36 81 Q28 74 27 61Z" fill="#f5a623"/>
+
+                <!-- HAIR — dark swept mass + amber highlight strands -->
+                <path d="M35 35 Q38 21 50 19 Q63 19 66 35 Q58 27 50 28 Q42 27 36 35Z" fill="#080a10"/>
+                <path d="M27 61 Q27 46 35 35 Q31 43 29 53 Q28 58 28 66Z" fill="#080a10"/>
+                <path d="M65 35 Q73 43 73 58 Q71 50 69 43 Q68 38 66 36Z" fill="#080a10"/>
+                <path d="M37 29 Q44 20 55 19 Q63 19 67 25" stroke="#f5a623" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+                <path d="M38 24 Q45 17 55 17 Q60 17 64 20" stroke="#f5a623" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.5"/>
+
+                <!-- EARS -->
+                <path d="M27 62 Q24 59 23 64 Q23 69 27 70Z" fill="#f5a623"/>
+                <path d="M73 62 Q76 59 77 64 Q77 69 73 70Z" fill="#f5a623"/>
+
+                <!-- EYEBROWS — bold, slightly arched -->
+                <path d="M30 50 Q37 45 45 47" stroke="#080a10" stroke-width="4" fill="none" stroke-linecap="round"/>
+                <path d="M55 47 Q63 45 70 50" stroke="#080a10" stroke-width="4" fill="none" stroke-linecap="round"/>
+
+                <!-- EYES — dark sockets with iris + catch-light -->
+                <ellipse cx="38" cy="58" rx="7" ry="5.5" fill="#080a10"/>
+                <ellipse cx="37" cy="57" rx="4" ry="3.5" fill="#f5a623" opacity="0.18"/>
+                <circle cx="39" cy="58" r="2.8" fill="#080a10"/>
+                <circle cx="40.5" cy="56" r="1.2" fill="#f5a623" opacity="0.55"/>
+                <ellipse cx="62" cy="58" rx="7" ry="5.5" fill="#080a10"/>
+                <ellipse cx="61" cy="57" rx="4" ry="3.5" fill="#f5a623" opacity="0.18"/>
+                <circle cx="63" cy="58" r="2.8" fill="#080a10"/>
+                <circle cx="64.5" cy="56" r="1.2" fill="#f5a623" opacity="0.55"/>
+
+                <!-- NOSE — bridge curve + nostrils -->
+                <path d="M47 63 Q45 69 44 72 Q47 74 50 74 Q53 74 56 72 Q55 69 53 63" stroke="#080a10" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.75"/>
+                <ellipse cx="45.5" cy="72" rx="2.2" ry="1.6" fill="#080a10" opacity="0.7"/>
+                <ellipse cx="54.5" cy="72" rx="2.2" ry="1.6" fill="#080a10" opacity="0.7"/>
+
+                <!-- SMILE — open, big, teeth showing -->
+                <path d="M34 76 Q42 71 50 72 Q58 71 66 76" stroke="#080a10" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                <path d="M35 77 Q50 87 65 77 Q57 83 50 83 Q43 83 35 77Z" fill="#080a10"/>
+                <path d="M38 83 Q50 87 62 83 Q56 86 50 87 Q44 86 38 83Z" fill="#c47d10" opacity="0.4"/>
+                <path d="M32 73 Q31 76 32 80" stroke="#080a10" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.5"/>
+                <path d="M68 73 Q69 76 68 80" stroke="#080a10" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.5"/>
+
+                <!-- SUIT -->
+                <path d="M15 108 Q16 86 28 82 Q37 79 42 85 L50 79 L58 85 Q63 79 72 82 Q84 86 85 108Z" fill="#f5a623"/>
+                <path d="M42 85 L50 96 L50 79Z" fill="#080a10"/>
+                <path d="M58 85 L50 96 L50 79Z" fill="#080a10"/>
+                <!-- Bow tie -->
+                <path d="M43 81 Q47 79 50 81 L53 78 Q57 80 57 82 Q54 83 51 81 L50 84 L49 81 Q46 83 43 82 Q43 80 43 81Z" fill="#080a10"/>
+
+                <!-- Colin text + arrow -->
+                <text x="7" y="22" font-family="Georgia,serif" font-size="9" font-style="italic" font-weight="bold" fill="#f5a623">Colin</text>
+                <path d="M23 23 Q30 33 35 43" stroke="#f5a623" stroke-width="1.5" fill="none" stroke-linecap="round" marker-end="url(#colinArrow)"/>
+
+                <!-- Network graph -->
+                <circle cx="73" cy="38" r="3.5" fill="#f5a623"/>
+                <circle cx="84" cy="28" r="3.5" fill="#f5a623"/>
+                <circle cx="84" cy="48" r="3.5" fill="#f5a623"/>
+                <circle cx="92" cy="38" r="3" fill="none" stroke="#f5a623" stroke-width="2"/>
+                <line x1="73" y1="38" x2="84" y2="28" stroke="#f5a623" stroke-width="1.5"/>
+                <line x1="73" y1="38" x2="84" y2="48" stroke="#f5a623" stroke-width="1.5"/>
+                <line x1="84" y1="38" x2="92" y2="38" stroke="#f5a623" stroke-width="1.5" stroke-dasharray="2.5,2"/>
+
+                <!-- Right arm (waving) — pivot at (58,85) -->
+                <g id="colin-wave-arm">
+                    <path d="M58 85 Q66 82 73 77 Q79 71 81 65 Q83 58 80 55 Q77 52 75 56 Q73 60 69 64 Q64 68 57 71" fill="#f5a623"/>
+                    <path d="M80 55 Q84 49 83 46" stroke="#f5a623" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                    <path d="M78 53 Q82 46 81 43" stroke="#f5a623" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                    <path d="M78 57 Q82 52 82 49" stroke="#f5a623" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                </g>
+            </svg>
+        </div>
+        <div class="hero-wordmark">
+            <div class="hero-title">Flex<span>plainer</span></div>
+            <div class="hero-sub">Battery dispatch explainability · Aurora EOS</div>
+        </div>
+    </div>
+
+    <!-- Bridge status bar -->
+    <div class="api-bar" id="apiBar">
+        <span>⚡ Start the bridge first:</span>
+        <code style="background:rgba(0,0,0,0.3);padding:2px 8px;border-radius:4px;font-size:12px">node opencode-chat-bridge.js</code>
+        <button onclick="checkBridge()">Connect</button>
+        <span id="bridgeStatus"></span>
+        <span style="margin-left:auto">or <a href="#" onclick="useDemoMode(); return false;">use demo mode</a></span>
+    </div>
+
+    <!-- Sub-tabs -->
+    <div class="subtabs">
+        <div class="subtab active" onclick="switchTab('chat',this)">Decision Chat</div>
+        <div class="subtab" onclick="switchTab('price',this)">Price &amp; Thresholds</div>
+        <div class="subtab" onclick="switchTab('soc',this)">State of Charge</div>
+    </div>
+
+    <!-- Content -->
+    <div id="tab-chat" class="content">
+
+        <!-- Chat -->
+        <div class="chat-panel">
+            <div class="panel-header">
+                Ask about this simulation
+                <span style="color:var(--text-muted);font-weight:400;text-transform:none;letter-spacing:0;font-size:11px">Scheduling phase · DA market</span>
+            </div>
+            <div class="messages" id="messages">
+                <div class="message assistant">
+                    <div class="bubble">
+                        This is a Chronos simulation for a 100 MW / 2h battery in GB, 15 Jan 2024.<br><br>
+                        Ask me why the battery made any scheduling decision — I can explain DA bids, price thresholds, fakeVOM, and state of charge at any timestamp.
+                    </div>
+                </div>
+            </div>
+            <div class="chat-input-area">
+                <div class="suggestions">
+                    <span class="suggestion" onclick="askQuestion(this.textContent)">Why export at 04:30?</span>
+                    <span class="suggestion" onclick="askQuestion(this.textContent)">When and why did it charge?</span>
+                    <span class="suggestion" onclick="askQuestion(this.textContent)">Explain the midday peak</span>
+                    <span class="suggestion" onclick="askQuestion(this.textContent)">Why no bid at 10:00?</span>
+                </div>
+                <form class="input-row" onsubmit="handleSubmit(event)">
+                    <input type="text" id="chatInput" placeholder="e.g. Why did it import at 08:00?" />
+                    <button type="submit" id="sendBtn">Ask</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Chart -->
+        <div class="chart-panel">
+            <div class="chart-toolbar">
+                <div class="window-label" id="windowLabel">Day-ahead price · thresholds · scheduled bids</div>
+                <button class="dl-btn">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 1v7M3 5l3 3 3-3M1 10h10"/></svg>
+                    Download Data
+                </button>
+            </div>
+            <div class="chart-container">
+                <canvas id="myChart"></canvas>
+            </div>
+            <div class="chart-meta">
+                <span><strong>Upper threshold:</strong> €51.0/MWh</span>
+                <span><strong>Lower threshold:</strong> €26.5/MWh</span>
+                <span><strong>FakeVOM:</strong> €3.5/MWh</span>
+                <span><strong>Region:</strong> GB</span>
+                <span><strong>Granularity:</strong> 30 min</span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Price & Thresholds tab -->
+    <div id="tab-price" class="content" style="display:none;flex-direction:column;overflow:auto;padding:16px 20px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;padding-bottom:10px;">
+            <div>
+                <div style="font-size:14px;font-weight:500;color:var(--text);" id="yrLabel">—</div>
+                <div style="font-size:12px;color:var(--text-muted);margin-top:3px;" id="yrStats">—</div>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+                <span style="font-size:12px;color:var(--text-dim);display:flex;align-items:center;gap:5px;">
+                    <span style="width:8px;height:8px;background:#22c55e;border-radius:50%;display:inline-block;"></span>Chronos buy
+                </span>
+                <span style="font-size:12px;color:var(--text-dim);display:flex;align-items:center;gap:5px;">
+                    <span style="width:8px;height:8px;background:#ef4444;border-radius:50%;display:inline-block;"></span>Chronos sell
+                </span>
+                <div style="display:flex;gap:4px;">
+                    <button class="dl-btn" id="yrZoomIn">+</button>
+                    <button class="dl-btn" id="yrZoomOut">−</button>
+                    <button class="dl-btn" id="yrZoomAll">full year</button>
+                </div>
+            </div>
+        </div>
+        <div style="position:relative;width:100%;flex:1;min-height:260px;">
+            <canvas id="yrChart" role="img" aria-label="Full year day-ahead prices with Chronos buy and sell bids">Hourly day-ahead electricity prices for 2026.</canvas>
+        </div>
+        <div style="margin:5px 0 3px;font-size:11px;color:var(--text-muted);">Scroll to zoom · drag chart or overview to pan · click overview to jump</div>
+        <canvas id="yrOv" height="52" style="width:100%;display:block;border-radius:4px;cursor:grab;"></canvas>
+    </div>
+
+    <!-- State of Charge tab -->
+    <div id="tab-soc" class="content" style="display:none;flex-direction:column;align-items:center;justify-content:center;color:var(--text-muted);font-size:13px;">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom:12px;opacity:0.3">
+            <rect x="4" y="10" width="28" height="22" rx="3"/><rect x="32" y="16" width="4" height="10" rx="2"/>
+            <line x1="10" y1="21" x2="22" y2="21"/><line x1="16" y1="15" x2="16" y2="27"/>
+        </svg>
+        State of charge view — coming soon
+    </div>
+</div>
+
+<script>
+// ─── Data ─────────────────────────────────────────────────────────────────────
+
+const HH = Array.from({length: 48}, (_, i) => {
+    const h = String(Math.floor(i / 2)).padStart(2, '0');
+    const m = i % 2 === 0 ? '00' : '30';
+    return `${h}:${m}`;
+});
+
+const PRICES = [
+    34.2, 35.8, 37.1, 38.6, 38.9, 39.2, 40.1, 41.8,
+    52.4, 53.1, 51.8, 50.2, 35.2, 28.4, 22.6, 18.9,
+    17.1, 18.4, 22.8, 26.0, 30.2, 35.6, 41.8, 47.4,
+    58.6, 60.2, 55.4, 49.8, 43.2, 38.6, 35.4, 36.8,
+    40.2, 48.6, 50.8, 44.2, 38.2, 35.6, 30.4, 26.8,
+    22.4, 24.6, 28.4, 32.6, 38.4, 42.8, 46.2, 48.6,
+];
+
+const UPPER = 51.0;
+const LOWER = 26.5;
+
+const BIDS = PRICES.map(p => {
+    if (p >= UPPER) return 0.75;
+    if (p <= LOWER) return -0.75;
+    return null;
+});
+
+// ─── LLM system prompt ───────────────────────────────────────────────────────
+
+const SYSTEM = `You are Flexplainer, an AI assistant that explains Chronos battery dispatch decisions to Aurora Energy Research analysts.
+
+CHRONOS OVERVIEW
+Chronos is Aurora's asset dispatch model for batteries (BESS). Key concepts:
+- Scheduling phase: day-ahead market bidding via linear optimisation. The battery sees the full day's prices and bids to export (sell) when prices are high and import (buy) when prices are low.
+- Upper threshold (€${UPPER}/MWh): export bid placed when DA price exceeds this.
+- Lower threshold (€${LOWER}/MWh): import bid placed when DA price falls below this.
+- FakeVOM (€3.5/MWh): calibration parameter for cycle cost — battery only bids when price spread justifies cycling.
+- State of charge (SoC): 0–1. Can only export if charged; can only import if there is room.
+
+TODAY'S SIMULATION — GB, 15 Jan 2024, 100 MW / 2h BESS
+Half-hourly data (index | time | DA price | bid):
+${HH.map((t, i) => `${String(i).padStart(2)} | ${t} | €${PRICES[i].toFixed(1)}/MWh | ${BIDS[i] === 0.75 ? '+0.75 export' : BIDS[i] === -0.75 ? '-0.75 import' : 'no bid'}`).join('\n')}
+
+RESPONSE FORMAT — return ONLY valid JSON, no other text:
+{
+  "explanation": "2–4 sentences referencing specific prices, thresholds, and Chronos logic",
+  "timeWindowStart": <integer 0–47>,
+  "timeWindowEnd": <integer 0–47>,
+  "keyFacts": ["fact 1", "fact 2", "fact 3"]
+}`;
+
+// ─── Bridge / mode ───────────────────────────────────────────────────────────
+
+const endpoint = location.protocol === 'file:'
+    ? 'http://localhost:8787/api/chat'
+    : '/api/chat';
+
+let bridgeReady = false;
+let demoMode    = false;
+
+// Message history — the full conversation sent on every request
+const history = [
+    { role: 'system', content: SYSTEM }
+];
+
+async function checkBridge() {
+    const status = document.getElementById('bridgeStatus');
+    status.textContent = 'Connecting…';
+    try {
+        const res = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ messages: [{ role: 'user', content: 'ping' }] })
+        });
+        bridgeReady = true;
+        document.getElementById('apiBar').classList.add('hidden');
+    } catch (e) {
+        status.style.color = '#f87171';
+        status.textContent = `Could not reach bridge at ${endpoint} — is node opencode-chat-bridge.js running?`;
+    }
+}
+
+function useDemoMode() {
+    demoMode = true;
+    document.getElementById('apiBar').classList.add('hidden');
+}
+
+// Auto-check bridge on load (non-blocking)
+window.addEventListener('load', () => {
+    fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: [{ role: 'user', content: 'ping' }] })
+    }).then(() => {
+        bridgeReady = true;
+        document.getElementById('apiBar').classList.add('hidden');
+    }).catch(() => {});
+});
+
+// ─── Chart ────────────────────────────────────────────────────────────────────
+
+Chart.defaults.color = '#64748b';
+Chart.defaults.borderColor = '#1e2436';
+
+const ctx = document.getElementById('myChart').getContext('2d');
+
+const chart = new Chart(ctx, {
+    data: {
+        labels: HH,
+        datasets: [
+            {
+                type: 'line',
+                label: 'Day-ahead price (€/MWh)',
+                data: PRICES,
+                borderColor: '#f5a623',
+                backgroundColor: 'transparent',
+                borderWidth: 2,
+                pointRadius: 0,
+                yAxisID: 'y',
+                order: 1,
+                tension: 0.3,
+            },
+            {
+                type: 'line',
+                label: `Upper threshold €${UPPER}/MWh`,
+                data: new Array(48).fill(UPPER),
+                borderColor: '#22c55e',
+                borderDash: [5, 4],
+                backgroundColor: 'transparent',
+                borderWidth: 1.5,
+                pointRadius: 0,
+                yAxisID: 'y',
+                order: 2,
+            },
+            {
+                type: 'line',
+                label: `Lower threshold €${LOWER}/MWh`,
+                data: new Array(48).fill(LOWER),
+                borderColor: '#60a5fa',
+                borderDash: [5, 4],
+                backgroundColor: 'transparent',
+                borderWidth: 1.5,
+                pointRadius: 0,
+                yAxisID: 'y',
+                order: 3,
+            },
+            {
+                type: 'bar',
+                label: 'Scheduled bid (MW/MW_asset)',
+                data: BIDS,
+                backgroundColor: 'rgba(200,200,220,0.7)',
+                borderColor: 'rgba(200,200,220,0.9)',
+                borderWidth: 1,
+                yAxisID: 'y2',
+                order: 4,
+                barPercentage: 0.5,
+            },
+        ]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+            legend: {
+                position: 'bottom',
+                labels: {
+                    font: { size: 11 },
+                    boxWidth: 16,
+                    padding: 14,
+                    color: '#64748b',
+                }
+            },
+            tooltip: {
+                backgroundColor: '#10131c',
+                borderColor: '#1e2436',
+                borderWidth: 1,
+                titleColor: '#e2e8f0',
+                bodyColor: '#94a3b8',
+                callbacks: {
+                    label: ctx => {
+                        if (ctx.datasetIndex === 3) {
+                            const v = ctx.parsed.y;
+                            if (v == null) return null;
+                            return `Bid: ${v > 0 ? '+' : ''}${v.toFixed(2)} MW/MW (${v > 0 ? 'export' : 'import'})`;
+                        }
+                        return `${ctx.dataset.label}: €${ctx.parsed.y.toFixed(1)}`;
+                    }
+                }
+            },
+            annotation: { annotations: {} }
+        },
+        scales: {
+            x: {
+                ticks: { maxTicksLimit: 13, font: { size: 11 }, color: '#64748b' },
+                grid: { color: '#1a1f2e' }
+            },
+            y: {
+                position: 'left',
+                title: { display: true, text: 'Price (€/MWh)', font: { size: 11 }, color: '#64748b' },
+                min: 0, max: 75,
+                ticks: { font: { size: 11 }, color: '#64748b' },
+                grid: { color: '#1a1f2e' }
+            },
+            y2: {
+                position: 'right',
+                title: { display: true, text: 'Allocated DA Capacity (MW/MW_asset)', font: { size: 11 }, color: '#64748b' },
+                min: -1.2, max: 1.2,
+                ticks: { font: { size: 11 }, color: '#64748b' },
+                grid: { display: false }
+            }
+        }
+    }
+});
+
+function highlightWindow(start, end) {
+    chart.options.plugins.annotation.annotations = {
+        window: {
+            type: 'box',
+            xMin: start - 0.5,
+            xMax: end + 0.5,
+            backgroundColor: 'rgba(245,166,35,0.07)',
+            borderColor: 'rgba(245,166,35,0.3)',
+            borderWidth: 1,
+        }
+    };
+    chart.update('none');
+    document.getElementById('windowLabel').textContent =
+        `Highlighted: ${HH[start]} – ${HH[Math.min(end, 47)]}`;
+}
+
+function clearHighlight() {
+    chart.options.plugins.annotation.annotations = {};
+    chart.update('none');
+    document.getElementById('windowLabel').textContent = 'Day-ahead price · thresholds · scheduled bids';
+}
+
+// ─── LLM ─────────────────────────────────────────────────────────────────────
+
+const DEMO = {
+    "Why export at 04:30?": {
+        explanation: "At 04:00–05:30 the DA price hit €52.4–53.1/MWh, breaching the upper threshold of €51.0/MWh. The scheduling phase placed export bids of 0.75 MW/MW_asset across that window. The battery had sufficient SoC from the overnight period to fulfil the positions.",
+        timeWindowStart: 7, timeWindowEnd: 11,
+        keyFacts: ["Peak price: €53.1/MWh at 04:30", "Upper threshold: €51.0/MWh", "Spread: +€2.1/MWh above threshold", "Bid: +0.75 MW/MW_asset export"]
+    },
+    "When and why did it charge?": {
+        explanation: "Import bids were placed at 08:00–09:00, when prices fell to €17.1–18.4/MWh — well below the lower threshold of €26.5/MWh. This is the scheduling phase deliberately building SoC ahead of the midday peak at 12:00–12:30.",
+        timeWindowStart: 14, timeWindowEnd: 19,
+        keyFacts: ["Lowest price: €17.1/MWh at 08:00", "Lower threshold: €26.5/MWh", "Import bids: 08:00–09:00", "Strategy: recharge for midday peak"]
+    },
+    "Explain the midday peak": {
+        explanation: "The 12:00–12:30 window was the highest-priced period of the day at €58.6–60.2/MWh, €9.2/MWh above the upper threshold. The scheduling phase placed export bids here. The battery relied on having recharged during the morning trough (08:00–09:00) to have capacity available.",
+        timeWindowStart: 24, timeWindowEnd: 27,
+        keyFacts: ["Peak price: €60.2/MWh at 12:30", "Spread above threshold: €9.2/MWh", "Highest price of the day", "Relied on prior morning import bids"]
+    },
+    "Why no bid at 10:00?": {
+        explanation: "At 10:00–11:00 prices were €30–42/MWh — above the lower threshold but below the upper threshold of €51.0/MWh. The spread did not justify cycling given fakeVOM. The battery was preserving SoC for the midday peak.",
+        timeWindowStart: 20, timeWindowEnd: 23,
+        keyFacts: ["Price at 10:00: €30.2/MWh", "Upper threshold not breached: €51.0/MWh", "Lower threshold not breached: €26.5/MWh", "Battery holding SoC for midday peak"]
+    }
+};
+
+async function callLLM(question) {
+    if (demoMode) {
+        const key = Object.keys(DEMO).find(k =>
+            question.toLowerCase().includes(k.toLowerCase().replace(/[?]/g,'').split(' ').slice(1).join(' '))
+        ) || Object.keys(DEMO)[Math.floor(Math.random() * Object.keys(DEMO).length)];
+        await new Promise(r => setTimeout(r, 600));
+        return DEMO[key];
+    }
+
+    // Append user turn to persistent history
+    history.push({ role: 'user', content: question });
+
+    const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: history })
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Bridge returned HTTP ' + res.status);
+
+    const text = data.response;
+
+    // Persist assistant reply to history
+    history.push({ role: 'assistant', content: text });
+
+    // Try to parse structured JSON (explanation + timeWindow + keyFacts)
+    const m = text.match(/\{[\s\S]*\}/);
+    if (m) {
+        try { return JSON.parse(m[0]); } catch (_) {}
+    }
+
+    // Plain-text fallback — show the full response, no chart highlight
+    return {
+        explanation: text,
+        timeWindowStart: 0,
+        timeWindowEnd: 47,
+        keyFacts: []
+    };
+}
+
+// ─── Chat UI ─────────────────────────────────────────────────────────────────
+
+function addUserMessage(text) {
+    const div = document.createElement('div');
+    div.className = 'message user';
+    div.innerHTML = `<div class="bubble">${text}</div>`;
+    document.getElementById('messages').appendChild(div);
+    scroll();
+}
+
+function addAssistantMessage(result) {
+    const div = document.createElement('div');
+    div.className = 'message assistant';
+
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble';
+    bubble.textContent = result.explanation;
+
+    const facts = document.createElement('ul');
+    facts.className = 'key-facts';
+    (result.keyFacts || []).forEach(f => {
+        const li = document.createElement('li');
+        li.textContent = f;
+        facts.appendChild(li);
+    });
+
+    const hint = document.createElement('div');
+    hint.className = 'hover-hint';
+    hint.textContent = `↗ Hover to highlight ${HH[result.timeWindowStart]}–${HH[result.timeWindowEnd]}`;
+
+    div.appendChild(bubble);
+    div.appendChild(facts);
+    div.appendChild(hint);
+
+    div.addEventListener('mouseenter', () => highlightWindow(result.timeWindowStart, result.timeWindowEnd));
+    div.addEventListener('mouseleave', clearHighlight);
+
+    document.getElementById('messages').appendChild(div);
+    highlightWindow(result.timeWindowStart, result.timeWindowEnd);
+    scroll();
+}
+
+function addError(msg) {
+    const div = document.createElement('div');
+    div.className = 'message assistant';
+    div.innerHTML = `<div class="bubble" style="border-color:rgba(239,68,68,0.4);background:rgba(239,68,68,0.08);color:#f87171">Error: ${msg}</div>`;
+    document.getElementById('messages').appendChild(div);
+    scroll();
+}
+
+function scroll() {
+    const el = document.getElementById('messages');
+    el.scrollTop = el.scrollHeight;
+}
+
+async function askQuestion(question) {
+    question = question.trim();
+    if (!question) return;
+    if (!bridgeReady && !demoMode) {
+        document.getElementById('apiBar').classList.remove('hidden');
+        return;
+    }
+    document.getElementById('chatInput').value = '';
+    document.getElementById('sendBtn').disabled = true;
+    addUserMessage(question);
+
+    const loading = document.createElement('div');
+    loading.className = 'loading-msg';
+    loading.textContent = 'Analysing simulation data…';
+    document.getElementById('messages').appendChild(loading);
+    scroll();
+
+    try {
+        const result = await callLLM(question);
+        loading.remove();
+        addAssistantMessage(result);
+    } catch (e) {
+        loading.remove();
+        addError(e.message);
+    }
+    document.getElementById('sendBtn').disabled = false;
+    document.getElementById('chatInput').focus();
+}
+
+function handleSubmit(e) {
+    e.preventDefault();
+    askQuestion(document.getElementById('chatInput').value);
+}
+
+function colinWave() {
+    const arm = document.getElementById('colin-wave-arm');
+    if (arm._waving) return;
+    arm._waving = true;
+    const angles = [0, -28, 18, -28, 14, -20, 5, 0];
+    const duration = 900;
+    const start = performance.now();
+    (function animate(now) {
+        const t = Math.min((now - start) / duration, 1);
+        const fi = t * (angles.length - 1);
+        const i = Math.min(Math.floor(fi), angles.length - 2);
+        const frac = fi - i;
+        const angle = angles[i] + (angles[i + 1] - angles[i]) * frac;
+        arm.setAttribute('transform', `rotate(${angle.toFixed(2)},58,83)`);
+        if (t < 1) { requestAnimationFrame(animate); }
+        else { arm.setAttribute('transform', ''); arm._waving = false; }
+    })(start);
+}
+
+// ─── Tab switching ────────────────────────────────────────────────────────────
+
+function switchTab(name, el) {
+    document.querySelectorAll('.subtab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    ['chat','price','soc'].forEach(id => {
+        document.getElementById('tab-' + id).style.display = id === name ? (id === 'chat' ? 'flex' : 'flex') : 'none';
+    });
+    if (name === 'price') initYearChart();
+}
+
+// ─── Year-view price chart ────────────────────────────────────────────────────
+
+let yrChartInited = false;
+let yrChart, yrWinStart = 0, yrWinSize = 14 * 24;
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+function initYearChart() {
+    if (yrChartInited) return;
+    yrChartInited = true;
+
+    function mkRand(seed) {
+        let s = seed >>> 0;
+        return () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; };
+    }
+    const rng = mkRand(1337);
+    const yrPrices = new Float32Array(8760);
+    for (let h = 0; h < 8760; h++) {
+        const doy = Math.floor(h / 24), hod = h % 24;
+        const dow = (doy + 3) % 7, isWE = dow >= 5;
+        const sea = 1.0 + 0.28 * Math.cos(2 * Math.PI * doy / 365);
+        let d;
+        if      (hod < 5)  d = 0.58 + 0.04 * hod;
+        else if (hod < 8)  d = 0.78 + 0.08 * (hod - 5) / 3;
+        else if (hod < 11) d = 0.86 + 0.06 * (hod - 8) / 3;
+        else if (hod < 16) d = 0.88 - 0.04 * (hod - 11) / 5;
+        else if (hod < 20) d = 0.84 + 0.48 * (hod - 16) / 4;
+        else               d = 1.32 - 0.56 * (hod - 20) / 4;
+        const u1 = Math.max(1e-9, rng()), u2 = rng();
+        const n = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+        yrPrices[h] = Math.max(5, 85 * sea * d * (isWE ? 0.82 : 1) * (1 + 0.11 * n));
+    }
+
+    const yrBuy = new Uint8Array(8760), yrSell = new Uint8Array(8760);
+    for (let day = 0; day < 365; day++) {
+        const base = day * 24;
+        const sl = Array.from({length: 24}, (_, h) => ({h: base + h, p: yrPrices[base + h]}));
+        sl.sort((a, b) => a.p - b.p);
+        const c = sl.slice(0, 4), e = sl.slice(-4);
+        const ac = c.reduce((s, x) => s + x.p, 0) / 4;
+        const ae = e.reduce((s, x) => s + x.p, 0) / 4;
+        if (ae - ac > 22) { c.forEach(x => yrBuy[x.h] = 1); e.forEach(x => yrSell[x.h] = 1); }
+    }
+
+    function fmtD(h) {
+        const d = new Date(2026, 0, 1 + Math.floor(h / 24));
+        return `${d.getDate()} ${MONTHS[d.getMonth()]}`;
+    }
+    function fmtFull(h) { return `${fmtD(h)} ${String(h % 24).padStart(2,'0')}:00`; }
+
+    function yrWinData() {
+        const end = Math.min(yrWinStart + yrWinSize, 8760);
+        const line = [], buys = [], sells = [];
+        for (let i = yrWinStart; i < end; i++) {
+            line.push({x: i, y: yrPrices[i]});
+            if (yrBuy[i])  buys.push({x: i, y: yrPrices[i]});
+            if (yrSell[i]) sells.push({x: i, y: yrPrices[i]});
+        }
+        return {line, buys, sells};
+    }
+
+    const mctx = document.getElementById('yrChart').getContext('2d');
+    const {line, buys, sells} = yrWinData();
+
+    yrChart = new Chart(mctx, {
+        type: 'line',
+        data: { datasets: [
+            {label:'Price', data: line, borderColor:'#f5a623', borderWidth:1.5, pointRadius:0, tension:0, fill:false, order:10},
+            {type:'scatter', label:'Buy bid', data: buys, backgroundColor:'#22c55e', borderColor:'#22c55e', pointStyle:'triangle', pointRadius:5, rotation:0, order:1},
+            {type:'scatter', label:'Sell bid', data: sells, backgroundColor:'#ef4444', borderColor:'#ef4444', pointStyle:'triangle', pointRadius:5, rotation:180, order:2},
+        ]},
+        options: {
+            responsive: true, maintainAspectRatio: false, animation: false,
+            interaction: {mode:'nearest', intersect:false, axis:'x'},
+            plugins: {
+                legend: {display: false},
+                tooltip: {
+                    backgroundColor: '#10131c', borderColor: '#1e2436', borderWidth: 1,
+                    titleColor: '#e2e8f0', bodyColor: '#94a3b8',
+                    callbacks: {
+                        title: items => items.length ? fmtFull(Math.round(items[0].parsed.x)) : '',
+                        label: item => {
+                            const v = item.parsed.y.toFixed(1);
+                            if (item.datasetIndex === 0) return `Price: £${v}/MWh`;
+                            if (item.datasetIndex === 1) return `Chronos buy @ £${v}/MWh`;
+                            if (item.datasetIndex === 2) return `Chronos sell @ £${v}/MWh`;
+                        },
+                    },
+                    filter: item => item.parsed && item.parsed.y != null,
+                },
+            },
+            scales: {
+                x: {type:'linear', ticks:{maxTicksLimit:8, callback: v => fmtD(Math.round(v)), color:'#64748b', font:{size:11}}, grid:{color:'#1a1f2e'}},
+                y: {ticks:{callback: v => `£${Math.round(v)}`, color:'#64748b', font:{size:11}}, grid:{color:'#1a1f2e'}},
+            },
+        },
+    });
+
+    // Overview canvas
+    const ovEl = document.getElementById('yrOv');
+    const ovCtx = ovEl.getContext('2d');
+    const dailyAvg = new Float32Array(365);
+    let ovMin = Infinity, ovMax = -Infinity;
+    for (let d = 0; d < 365; d++) {
+        let s = 0; for (let h = 0; h < 24; h++) s += yrPrices[d * 24 + h];
+        dailyAvg[d] = s / 24;
+        if (dailyAvg[d] < ovMin) ovMin = dailyAvg[d];
+        if (dailyAvg[d] > ovMax) ovMax = dailyAvg[d];
+    }
+
+    function drawOv() {
+        const dpr = window.devicePixelRatio || 1;
+        const W = ovEl.offsetWidth, H = ovEl.offsetHeight;
+        ovEl.width = W * dpr; ovEl.height = H * dpr;
+        ovCtx.scale(dpr, dpr);
+        const pad = 3, range = ovMax - ovMin;
+        ovCtx.clearRect(0, 0, W, H);
+        ovCtx.fillStyle = 'rgba(255,255,255,0.02)'; ovCtx.fillRect(0, 0, W, H);
+        ovCtx.beginPath();
+        for (let d = 0; d < 365; d++) {
+            const x = pad + (d / 364) * (W - 2 * pad);
+            const y = H - pad - ((dailyAvg[d] - ovMin) / range) * (H - 2 * pad - 2);
+            if (d === 0) { ovCtx.moveTo(x, H - pad); ovCtx.lineTo(x, y); } else ovCtx.lineTo(x, y);
+        }
+        ovCtx.lineTo(pad + (W - 2 * pad), H - pad); ovCtx.closePath();
+        ovCtx.fillStyle = 'rgba(245,166,35,0.12)'; ovCtx.fill();
+        ovCtx.beginPath();
+        for (let d = 0; d < 365; d++) {
+            const x = pad + (d / 364) * (W - 2 * pad);
+            const y = H - pad - ((dailyAvg[d] - ovMin) / range) * (H - 2 * pad - 2);
+            d === 0 ? ovCtx.moveTo(x, y) : ovCtx.lineTo(x, y);
+        }
+        ovCtx.strokeStyle = '#f5a623'; ovCtx.lineWidth = 1; ovCtx.stroke();
+        const bx1 = pad + (yrWinStart / 8759) * (W - 2 * pad);
+        const bx2 = pad + (Math.min(yrWinStart + yrWinSize, 8759) / 8759) * (W - 2 * pad);
+        ovCtx.fillStyle = 'rgba(245,166,35,0.14)'; ovCtx.fillRect(bx1, 0, Math.max(bx2 - bx1, 2), H);
+        ovCtx.strokeStyle = 'rgba(245,166,35,0.55)'; ovCtx.lineWidth = 1; ovCtx.strokeRect(bx1, 0, Math.max(bx2 - bx1, 2), H);
+    }
+
+    function yrUpdateAll() {
+        const endH = Math.min(yrWinStart + yrWinSize - 1, 8759);
+        document.getElementById('yrLabel').textContent = `${fmtD(yrWinStart)} – ${fmtD(endH)} 2026`;
+        let avg = 0, mx = -Infinity, mn = Infinity, cnt = 0;
+        for (let i = yrWinStart; i < yrWinStart + yrWinSize && i < 8760; i++) {
+            avg += yrPrices[i]; if (yrPrices[i] > mx) mx = yrPrices[i]; if (yrPrices[i] < mn) mn = yrPrices[i]; cnt++;
+        }
+        avg /= cnt;
+        document.getElementById('yrStats').textContent = `Avg £${avg.toFixed(0)} · Max £${mx.toFixed(0)} · Min £${mn.toFixed(0)} /MWh · ${Math.round(yrWinSize / 24)} days shown`;
+        const {line, buys, sells} = yrWinData();
+        yrChart.data.datasets[0].data = line;
+        yrChart.data.datasets[1].data = buys;
+        yrChart.data.datasets[2].data = sells;
+        const r = yrWinSize <= 3*24 ? 7 : yrWinSize <= 7*24 ? 5 : yrWinSize <= 30*24 ? 4 : 3;
+        yrChart.data.datasets[1].pointRadius = r; yrChart.data.datasets[2].pointRadius = r;
+        yrChart.update('none'); drawOv();
+    }
+
+    document.getElementById('yrChart').addEventListener('wheel', e => {
+        e.preventDefault();
+        const f = e.deltaY > 0 ? 1.3 : (1 / 1.3);
+        const ns = Math.max(24, Math.min(8760, Math.round(yrWinSize * f)));
+        const rel = (e.clientX - e.target.getBoundingClientRect().left) / e.target.offsetWidth;
+        yrWinStart = Math.round(yrWinStart + rel * yrWinSize - rel * ns);
+        yrWinSize = ns;
+        yrWinStart = Math.max(0, Math.min(8760 - yrWinSize, yrWinStart));
+        yrUpdateAll();
+    }, {passive: false});
+
+    let mdD = false, mdX = 0, mdW = 0;
+    const mcEl2 = document.getElementById('yrChart');
+    mcEl2.addEventListener('mousedown', e => { mdD = true; mdX = e.clientX; mdW = yrWinStart; });
+    window.addEventListener('mousemove', e => {
+        if (!mdD) return;
+        yrWinStart = Math.max(0, Math.min(8760 - yrWinSize, mdW + Math.round(-(e.clientX - mdX) / mcEl2.offsetWidth * yrWinSize)));
+        yrUpdateAll();
+    });
+    window.addEventListener('mouseup', () => { mdD = false; });
+
+    let ovD = false, ovX2 = 0, ovW2 = 0, ovMv = false;
+    ovEl.addEventListener('mousedown', e => { ovD = true; ovX2 = e.clientX; ovW2 = yrWinStart; ovMv = false; ovEl.style.cursor = 'grabbing'; });
+    window.addEventListener('mousemove', e => {
+        if (!ovD) return;
+        if (Math.abs(e.clientX - ovX2) > 2) ovMv = true;
+        yrWinStart = Math.max(0, Math.min(8760 - yrWinSize, ovW2 + Math.round((e.clientX - ovX2) / ovEl.offsetWidth * 8759)));
+        yrUpdateAll();
+    });
+    window.addEventListener('mouseup', () => { if (ovD) { ovD = false; ovEl.style.cursor = 'grab'; } });
+    ovEl.addEventListener('click', e => {
+        if (ovMv) return;
+        yrWinStart = Math.max(0, Math.min(8760 - yrWinSize, Math.round((e.clientX / ovEl.offsetWidth) * 8759 - yrWinSize / 2)));
+        yrUpdateAll();
+    });
+
+    document.getElementById('yrZoomIn').addEventListener('click', () => {
+        yrWinSize = Math.max(24, Math.round(yrWinSize / 1.6));
+        yrWinStart = Math.max(0, Math.min(8760 - yrWinSize, yrWinStart)); yrUpdateAll();
+    });
+    document.getElementById('yrZoomOut').addEventListener('click', () => {
+        yrWinSize = Math.min(8760, Math.round(yrWinSize * 1.6));
+        yrWinStart = Math.max(0, Math.min(8760 - yrWinSize, yrWinStart)); yrUpdateAll();
+    });
+    document.getElementById('yrZoomAll').addEventListener('click', () => { yrWinStart = 0; yrWinSize = 8760; yrUpdateAll(); });
+
+    window.addEventListener('resize', () => { if (yrChartInited) drawOv(); });
+    yrUpdateAll();
+}
+</script>
+</body>
+</html>

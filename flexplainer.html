@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Day-Ahead Market Prices — Chronos Bids</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #fff;
+      color: #111;
+      padding: 24px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    @media (prefers-color-scheme: dark) {
+      body { background: #0f0f0f; color: #e8e8e8; }
+    }
+    .hdr { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px; padding-bottom: 12px; }
+    .leg { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+    .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+    .zbtn {
+      font-size: 13px; padding: 4px 12px; cursor: pointer;
+      border: 0.5px solid rgba(0,0,0,0.25); border-radius: 6px;
+      background: transparent; color: inherit;
+    }
+    .zbtn:hover { background: rgba(0,0,0,0.06); }
+    @media (prefers-color-scheme: dark) {
+      .zbtn { border-color: rgba(255,255,255,0.2); }
+      .zbtn:hover { background: rgba(255,255,255,0.07); }
+    }
+    #wLabel { font-size: 16px; font-weight: 500; }
+    #wStats { font-size: 12px; color: #666; margin-top: 3px; }
+    @media (prefers-color-scheme: dark) { #wStats { color: #999; } }
+    .hint { margin: 5px 0 3px; font-size: 11px; color: #aaa; }
+    #ov { width: 100%; display: block; border-radius: 6px; cursor: grab; }
+  </style>
+</head>
+<body>
+
+<div class="hdr">
+  <div>
+    <div id="wLabel">—</div>
+    <div id="wStats">—</div>
+  </div>
+  <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+    <div class="leg">
+      <span style="font-size:12px;color:#666;display:flex;align-items:center;gap:5px">
+        <span class="dot" style="background:#22c55e"></span>Chronos buy
+      </span>
+      <span style="font-size:12px;color:#666;display:flex;align-items:center;gap:5px">
+        <span class="dot" style="background:#ef4444"></span>Chronos sell
+      </span>
+    </div>
+    <div style="display:flex;gap:4px">
+      <button class="zbtn" id="zIn">+</button>
+      <button class="zbtn" id="zOut">−</button>
+      <button class="zbtn" id="zAll">full year</button>
+    </div>
+  </div>
+</div>
+
+<div style="position:relative;width:100%;height:340px">
+  <canvas id="mc" role="img" aria-label="Day-ahead electricity prices 2026 with Chronos buy and sell bids. Scroll to zoom, drag to pan.">
+    Hourly day-ahead electricity prices for 2026 with Chronos battery storage bids.
+  </canvas>
+</div>
+
+<div class="hint">Scroll to zoom · drag chart or overview to pan · click overview to jump</div>
+
+<canvas id="ov" height="56"></canvas>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+(function () {
+  function mkRand(seed) {
+    let s = seed >>> 0;
+    return () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; };
+  }
+  const rng = mkRand(1337);
+
+  // Generate 8760 hourly prices
+  const prices = new Float32Array(8760);
+  for (let h = 0; h < 8760; h++) {
+    const doy = Math.floor(h / 24), hod = h % 24;
+    const dow = (doy + 3) % 7, isWE = dow >= 5;
+    const sea = 1.0 + 0.28 * Math.cos(2 * Math.PI * doy / 365);
+    let d;
+    if      (hod < 5)  d = 0.58 + 0.04 * hod;
+    else if (hod < 8)  d = 0.78 + 0.08 * (hod - 5) / 3;
+    else if (hod < 11) d = 0.86 + 0.06 * (hod - 8) / 3;
+    else if (hod < 16) d = 0.88 - 0.04 * (hod - 11) / 5;
+    else if (hod < 20) d = 0.84 + 0.48 * (hod - 16) / 4;
+    else               d = 1.32 - 0.56 * (hod - 20) / 4;
+    const u1 = Math.max(1e-9, rng()), u2 = rng();
+    const n = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+    prices[h] = Math.max(5, 85 * sea * d * (isWE ? 0.82 : 1) * (1 + 0.11 * n));
+  }
+
+  // Compute Chronos bids: 4 cheapest hours = buy, 4 dearest = sell, only if spread > £22
+  const isBuy = new Uint8Array(8760), isSell = new Uint8Array(8760);
+  for (let day = 0; day < 365; day++) {
+    const base = day * 24;
+    const sl = Array.from({ length: 24 }, (_, h) => ({ h: base + h, p: prices[base + h] }));
+    sl.sort((a, b) => a.p - b.p);
+    const c = sl.slice(0, 4), e = sl.slice(-4);
+    const ac = c.reduce((s, x) => s + x.p, 0) / 4;
+    const ae = e.reduce((s, x) => s + x.p, 0) / 4;
+    if (ae - ac > 22) {
+      c.forEach(x => isBuy[x.h] = 1);
+      e.forEach(x => isSell[x.h] = 1);
+    }
+  }
+
+  let winStart = 0, winSize = 14 * 24;
+
+  const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+  function fmt(h) {
+    const d = new Date(2026, 0, 1 + Math.floor(h / 24));
+    return `${d.getDate()} ${MONTHS[d.getMonth()]}`;
+  }
+  function fmtFull(h) {
+    return `${fmt(h)} ${String(h % 24).padStart(2, '0')}:00`;
+  }
+
+  function winData() {
+    const end = Math.min(winStart + winSize, 8760);
+    const line = [], buys = [], sells = [];
+    for (let i = winStart; i < end; i++) {
+      line.push({ x: i, y: prices[i] });
+      if (isBuy[i])  buys.push({ x: i, y: prices[i] });
+      if (isSell[i]) sells.push({ x: i, y: prices[i] });
+    }
+    return { line, buys, sells };
+  }
+
+  // Main chart
+  const ctx = document.getElementById('mc').getContext('2d');
+  const { line, buys, sells } = winData();
+
+  const chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      datasets: [
+        {
+          label: 'Price',
+          data: line,
+          borderColor: '#3578e5',
+          borderWidth: 1.5,
+          pointRadius: 0,
+          tension: 0,
+          fill: false,
+          order: 10,
+        },
+        {
+          type: 'scatter',
+          label: 'Buy bid',
+          data: buys,
+          backgroundColor: '#22c55e',
+          borderColor: '#22c55e',
+          pointStyle: 'triangle',
+          pointRadius: 5,
+          rotation: 0,
+          order: 1,
+        },
+        {
+          type: 'scatter',
+          label: 'Sell bid',
+          data: sells,
+          backgroundColor: '#ef4444',
+          borderColor: '#ef4444',
+          pointStyle: 'triangle',
+          pointRadius: 5,
+          rotation: 180,
+          order: 2,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: false,
+      interaction: { mode: 'nearest', intersect: false, axis: 'x' },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            title: items => items.length ? fmtFull(Math.round(items[0].parsed.x)) : '',
+            label: item => {
+              const v = item.parsed.y.toFixed(1);
+              if (item.datasetIndex === 0) return `Price: £${v}/MWh`;
+              if (item.datasetIndex === 1) return `Chronos buy @ £${v}/MWh`;
+              if (item.datasetIndex === 2) return `Chronos sell @ £${v}/MWh`;
+            },
+          },
+          filter: item => item.parsed && item.parsed.y != null,
+          backgroundColor: 'rgba(0,0,0,0.78)',
+          titleFont: { size: 11 },
+          bodyFont: { size: 11 },
+          padding: 8,
+        },
+      },
+      scales: {
+        x: {
+          type: 'linear',
+          ticks: { maxTicksLimit: 8, callback: v => fmt(Math.round(v)), color: '#888', font: { size: 11 } },
+          grid: { color: 'rgba(128,128,128,0.08)' },
+        },
+        y: {
+          ticks: { callback: v => `£${Math.round(v)}`, color: '#888', font: { size: 11 } },
+          grid: { color: 'rgba(128,128,128,0.08)' },
+        },
+      },
+    },
+  });
+
+  // Overview
+  const ovCanvas = document.getElementById('ov');
+  const ovCtx = ovCanvas.getContext('2d');
+
+  const dailyAvg = new Float32Array(365);
+  let ovMin = Infinity, ovMax = -Infinity;
+  for (let d = 0; d < 365; d++) {
+    let s = 0;
+    for (let h = 0; h < 24; h++) s += prices[d * 24 + h];
+    dailyAvg[d] = s / 24;
+    if (dailyAvg[d] < ovMin) ovMin = dailyAvg[d];
+    if (dailyAvg[d] > ovMax) ovMax = dailyAvg[d];
+  }
+
+  function drawOv() {
+    const dpr = window.devicePixelRatio || 1;
+    const W = ovCanvas.offsetWidth, H = ovCanvas.offsetHeight;
+    ovCanvas.width = W * dpr; ovCanvas.height = H * dpr;
+    ovCtx.scale(dpr, dpr);
+    const dk = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const pad = 3, range = ovMax - ovMin;
+
+    ovCtx.clearRect(0, 0, W, H);
+    ovCtx.fillStyle = dk ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.03)';
+    ovCtx.fillRect(0, 0, W, H);
+
+    // Area fill
+    ovCtx.beginPath();
+    for (let d = 0; d < 365; d++) {
+      const x = pad + (d / 364) * (W - 2 * pad);
+      const y = H - pad - ((dailyAvg[d] - ovMin) / range) * (H - 2 * pad - 2);
+      if (d === 0) { ovCtx.moveTo(x, H - pad); ovCtx.lineTo(x, y); }
+      else ovCtx.lineTo(x, y);
+    }
+    ovCtx.lineTo(pad + (W - 2 * pad), H - pad);
+    ovCtx.closePath();
+    ovCtx.fillStyle = dk ? 'rgba(53,120,229,0.18)' : 'rgba(53,120,229,0.1)';
+    ovCtx.fill();
+
+    // Line
+    ovCtx.beginPath();
+    for (let d = 0; d < 365; d++) {
+      const x = pad + (d / 364) * (W - 2 * pad);
+      const y = H - pad - ((dailyAvg[d] - ovMin) / range) * (H - 2 * pad - 2);
+      d === 0 ? ovCtx.moveTo(x, y) : ovCtx.lineTo(x, y);
+    }
+    ovCtx.strokeStyle = dk ? '#5b9bd5' : '#3578e5';
+    ovCtx.lineWidth = 1;
+    ovCtx.stroke();
+
+    // Brush
+    const bx1 = pad + (winStart / 8759) * (W - 2 * pad);
+    const bx2 = pad + (Math.min(winStart + winSize, 8759) / 8759) * (W - 2 * pad);
+    const bw = Math.max(bx2 - bx1, 2);
+    ovCtx.fillStyle = dk ? 'rgba(255,255,255,0.14)' : 'rgba(0,0,0,0.10)';
+    ovCtx.fillRect(bx1, 0, bw, H);
+    ovCtx.strokeStyle = dk ? 'rgba(255,255,255,0.55)' : 'rgba(0,0,0,0.4)';
+    ovCtx.lineWidth = 1;
+    ovCtx.strokeRect(bx1, 0, bw, H);
+  }
+
+  function updateAll() {
+    const endH = Math.min(winStart + winSize - 1, 8759);
+    document.getElementById('wLabel').textContent = `${fmt(winStart)} – ${fmt(endH)} 2026`;
+    let avg = 0, mx = -Infinity, mn = Infinity, cnt = 0;
+    for (let i = winStart; i < winStart + winSize && i < 8760; i++) {
+      avg += prices[i];
+      if (prices[i] > mx) mx = prices[i];
+      if (prices[i] < mn) mn = prices[i];
+      cnt++;
+    }
+    avg /= cnt;
+    document.getElementById('wStats').textContent =
+      `Avg £${avg.toFixed(0)} · Max £${mx.toFixed(0)} · Min £${mn.toFixed(0)} /MWh · ${Math.round(winSize / 24)} days shown`;
+
+    const { line, buys, sells } = winData();
+    chart.data.datasets[0].data = line;
+    chart.data.datasets[1].data = buys;
+    chart.data.datasets[2].data = sells;
+    const r = winSize <= 3 * 24 ? 7 : winSize <= 7 * 24 ? 5 : winSize <= 30 * 24 ? 4 : 3;
+    chart.data.datasets[1].pointRadius = r;
+    chart.data.datasets[2].pointRadius = r;
+    chart.update('none');
+    drawOv();
+  }
+
+  // Scroll to zoom on main chart
+  document.getElementById('mc').addEventListener('wheel', e => {
+    e.preventDefault();
+    const f = e.deltaY > 0 ? 1.3 : (1 / 1.3);
+    const ns = Math.max(24, Math.min(8760, Math.round(winSize * f)));
+    const rel = (e.clientX - e.target.getBoundingClientRect().left) / e.target.offsetWidth;
+    winStart = Math.round(winStart + rel * winSize - rel * ns);
+    winSize = ns;
+    winStart = Math.max(0, Math.min(8760 - winSize, winStart));
+    updateAll();
+  }, { passive: false });
+
+  // Drag on main chart to pan
+  let mdDrag = false, mdX = 0, mdW = 0;
+  const mcEl = document.getElementById('mc');
+  mcEl.addEventListener('mousedown', e => { mdDrag = true; mdX = e.clientX; mdW = winStart; });
+  window.addEventListener('mousemove', e => {
+    if (!mdDrag) return;
+    const dh = Math.round(-(e.clientX - mdX) / mcEl.offsetWidth * winSize);
+    winStart = Math.max(0, Math.min(8760 - winSize, mdW + dh));
+    updateAll();
+  });
+  window.addEventListener('mouseup', () => { mdDrag = false; });
+
+  // Drag / click on overview
+  let ovDrag = false, ovX = 0, ovW = 0, ovMoved = false;
+  ovCanvas.addEventListener('mousedown', e => {
+    ovDrag = true; ovX = e.clientX; ovW = winStart; ovMoved = false;
+    ovCanvas.style.cursor = 'grabbing';
+  });
+  window.addEventListener('mousemove', e => {
+    if (!ovDrag) return;
+    if (Math.abs(e.clientX - ovX) > 2) ovMoved = true;
+    const dh = Math.round((e.clientX - ovX) / ovCanvas.offsetWidth * 8759);
+    winStart = Math.max(0, Math.min(8760 - winSize, ovW + dh));
+    updateAll();
+  });
+  window.addEventListener('mouseup', () => {
+    if (ovDrag) { ovDrag = false; ovCanvas.style.cursor = 'grab'; }
+  });
+  ovCanvas.addEventListener('click', e => {
+    if (ovMoved) return;
+    const rel = e.clientX / ovCanvas.offsetWidth;
+    winStart = Math.max(0, Math.min(8760 - winSize, Math.round(rel * 8759 - winSize / 2)));
+    updateAll();
+  });
+
+  // Zoom buttons
+  document.getElementById('zIn').addEventListener('click', () => {
+    winSize = Math.max(24, Math.round(winSize / 1.6));
+    winStart = Math.max(0, Math.min(8760 - winSize, winStart));
+    updateAll();
+  });
+  document.getElementById('zOut').addEventListener('click', () => {
+    winSize = Math.min(8760, Math.round(winSize * 1.6));
+    winStart = Math.max(0, Math.min(8760 - winSize, winStart));
+    updateAll();
+  });
+  document.getElementById('zAll').addEventListener('click', () => {
+    winStart = 0; winSize = 8760; updateAll();
+  });
+
+  window.addEventListener('resize', () => drawOv());
+  updateAll();
+})();
+</script>
+
+</body>
+</html>
